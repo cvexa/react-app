@@ -1,11 +1,12 @@
-import Login from "./components/Login/Login.jsx";
-import Container from "@mui/material/Container";
+import "./App.css";
+import AppRouter from "./components/Router/Router.jsx";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
     return (
-        <Container fixed>
-            <Login/>
-        </Container>
+        <BrowserRouter>
+            <AppRouter match={import.meta.env.BASE_URL}/>
+        </BrowserRouter>
     )
 }
 

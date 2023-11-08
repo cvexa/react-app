@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 export default function SubHeader() {
     return (
         <div className="sub-header">
@@ -11,11 +13,8 @@ export default function SubHeader() {
                     </div>
                     <div className="col-lg-4 col-md-4">
                         <ul className="social-links">
-                            <li><a href="#"><i className="fab fa-facebook"></i></a></li>
-                            <li><a href="https://x.com/minthu" target="_blank" rel="noreferrer"><i className="fab fa-twitter"></i></a>
-                            </li>
-                            <li><a href="#"><i className="fab fa-linkedin"></i></a></li>
-                            <li><a href="#"><i className="fab fa-instagram"></i></a></li>
+                            <li><Link title="Login" to={'/login'}><i className="fa-solid fa-arrow-right-to-bracket"></i></Link></li>
+                            <li><Link title="Register" to={'/register'}><i className="fa-solid fa-address-card"></i></Link></li>
                         </ul>
                     </div>
                 </div>

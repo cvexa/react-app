@@ -1,4 +1,5 @@
 import SubHeader from "./SubHeader.jsx";
+import {Link} from "react-router-dom";
 
 export default function Header() {
     return (<>
@@ -8,11 +9,11 @@ export default function Header() {
                     <div className="row">
                         <div className="col-12">
                             <nav className="main-nav">
-                                <a href="index.html" className="logo">
-                                    <h1>Villa</h1>
-                                </a>
+                                <Link to={'/'} className="logo">
+                                    <h1>React</h1>
+                                </Link>
                                 <ul className="nav">
-                                    <li><a href="index.html" className="active">Home</a></li>
+                                    <li><Link to={'/'}>Home</Link></li>
                                     <li><a href="properties.html">Properties</a></li>
                                     <li><a href="property-details.html">Property Details</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>

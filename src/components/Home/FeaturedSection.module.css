@@ -1,0 +1,11 @@
+.featIco{
+    max-width: 52px;
+    width: auto;
+    padding-left:10px;
+}
+
+.featMainIco{
+    max-width: 60px;
+    padding-left:10px !important;
+    width: auto;
+}

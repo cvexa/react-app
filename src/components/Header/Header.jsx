@@ -1,5 +1,5 @@
 import SubHeader from "./SubHeader.jsx";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export default function Header() {
     return (<>
@@ -13,10 +13,12 @@ export default function Header() {
                                     <h1>React</h1>
                                 </Link>
                                 <ul className="nav">
-                                    <li><Link to={'/'}>Home</Link></li>
+                                    <li><NavLink to={'/'} className={({ isActive }) => isActive ? "active" : ""}>Home</NavLink></li>
                                     <li><a href="properties.html">Properties</a></li>
                                     <li><a href="property-details.html">Property Details</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>
+                                    <li><NavLink to={'/login'} className={({ isActive }) => isActive ? "active" : ""}>Login</NavLink></li>
+                                    <li><NavLink to={'/register'} className={({ isActive }) => isActive ? "active" : ""}>Register</NavLink></li>
                                     <li><a href="#"><i className="fa fa-calendar"></i> Schedule a visit</a></li>
                                 </ul>
                                 <a className='menu-trigger'>

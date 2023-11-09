@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer.jsx";
 function App() {
     return (
         <BrowserRouter>
+            {/*TO DO add header and footer only for the public part*/}
             <Header />
                 <AppRouter match={import.meta.env.BASE_URL}/>
             <Footer/>

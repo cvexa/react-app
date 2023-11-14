@@ -10,11 +10,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {logIn} from '../../services/user.jsx'
-import {Alert} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {useUserContext} from "../../contexts/User.jsx";
+import {Alert} from "@mui/material";
 
 export default function Login() {
-    const [user, setUser] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [password, setPassword] = useState('');
     const userValidationMsg = 'Email address is required and should be valid email';
     const passwordValidationMsg = 'Password should be least 6 characters and include atleast one number';
@@ -24,31 +25,29 @@ export default function Login() {
     });
     const [loginError, setLoginError] = useState(false);
     const navigate = useNavigate();
+    const { user, setUser } = useUserContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if(!errors.email && !errors.password) {
-            console.log({
-                email: data.get('email'),
-                password: data.get('password'),
-            });
             try{
                 logIn({email: data.get('email'), password: data.get('password')}).then( (res) => {
-                    console.log(res);
-                    navigate('/dashboard');
-                    //to do store user token into user context to be used on the app later
+                    if(res.success) {
+                        setUser(res.data);//to do store user token into user context to be used on the app later
+                        navigate('/dashboard');
+                    }else{
+                        setLoginError(res.message);
+                    }
                 });
             }catch(e) {
                 setLoginError(e);
             }
-        }else{
-            console.log('error');
         }
     };
 
     const isUsrValid = () => {
-        if(user.length < 1 || !/\S+@\S+\.\S+/.test(user)){
+        if(userEmail.length < 1 || !/\S+@\S+\.\S+/.test(userEmail)){
            setErrors({...errors, email:true})
         }else {
             setErrors({...errors, email: false});
@@ -91,9 +90,9 @@ export default function Login() {
                         autoComplete="email"
                         error={errors.email}
                         helperText={userValidationMsg}
-                        value={user}
+                        value={userEmail}
                         onChange={ (e) => {
-                            setUser(e.target.value);
+                            setUserEmail(e.target.value);
                             isUsrValid();
                         }}
                     />

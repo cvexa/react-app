@@ -1,9 +1,18 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Layout from "../Layout/Layout";
+import {useUserContext} from "../../../contexts/User.jsx";
+import {useEffect} from "react";
 
 
 function Dashboard() {
+    const { user, setUser } = useUserContext();
+
+    useEffect(() => {
+        console.log(user);
+        console.log('user context');
+    },[]);
+
     return (
         <Layout>
             <Typography paragraph>

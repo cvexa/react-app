@@ -3,6 +3,7 @@ import Login from "../Login/Login.jsx";
 import Home from "../Home/Home.jsx";
 import Dashboard from "../Admin/Dashboard/Dashboard.jsx";
 import {useUserContext} from "../../contexts/User.jsx";
+import Contacts from "../Contacts/Contacts.jsx";
 
 export default function AppRouter(props) {
     const { user, setUser } = useUserContext();
@@ -11,5 +12,6 @@ export default function AppRouter(props) {
         <Route path={`${props.match}/`} exact element={<Home/>}/>
         <Route path={`${props.match}/login`} exact element={<Login/>}/>
         <Route path={`${props.match}/dashboard`} exact element={user.id ? <Dashboard/> : 'not found'}/>
+        <Route path={`${props.match}/contacts`} exact element={<Contacts />}/>
     </Routes>)
 }

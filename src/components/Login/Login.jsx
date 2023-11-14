@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import {logIn} from '../../services/user.jsx'
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../contexts/User.jsx";
-import {Alert} from "@mui/material";
+import {Alert, CircularProgress} from "@mui/material";
 
 export default function Login() {
     const [userEmail, setUserEmail] = useState('');
@@ -26,13 +26,16 @@ export default function Login() {
     const [loginError, setLoginError] = useState(false);
     const navigate = useNavigate();
     const { user, setUser } = useUserContext();
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if(!errors.email && !errors.password) {
+            setLoading(true);
             try{
                 logIn({email: data.get('email'), password: data.get('password')}).then( (res) => {
+                    setLoading(false);
                     if(res.success) {
                         setUser(res.data);//to do store user token into user context to be used on the app later
                         navigate('/dashboard');
@@ -112,14 +115,20 @@ export default function Login() {
                             isPassValid();
                         }}
                     />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Sign In
-                    </Button>
+                    {!loading ?
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                        >
+                            Sign In
+                        </Button>
+                        :
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress />
+                        </Box>
+                    }
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">

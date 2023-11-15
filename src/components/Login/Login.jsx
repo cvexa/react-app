@@ -13,6 +13,7 @@ import {logIn} from '../../services/user.jsx'
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../contexts/User.jsx";
 import {Alert, CircularProgress} from "@mui/material";
+import {isEmailValid, isPasswordValid} from "../../utils/validations.js"
 
 export default function Login() {
     const [userEmail, setUserEmail] = useState('');
@@ -49,20 +50,20 @@ export default function Login() {
         }
     };
 
-    const isUsrValid = () => {
-        if(userEmail.length < 1 || !/\S+@\S+\.\S+/.test(userEmail)){
-           setErrors({...errors, email:true})
-        }else {
-            setErrors({...errors, email: false});
+    const isUsrValid = (user) => {
+        let isVaildEmailError = false;
+        if(!isEmailValid(user)){
+            isVaildEmailError = true
         }
+        setErrors({...errors, email:isVaildEmailError})
     }
 
-    const isPassValid = () => {
-        if(password.length < 6 || !/^(?=.{6,}$)\D*\d/.test(password)){
-            setErrors({...errors, password:true})
-        }else {
-            setErrors({...errors, password:false})
+    const isPassValid = (pass) => {
+        let isValidPasswordError = false;
+        if(!isPasswordValid(pass)){
+            isValidPasswordError = true
         }
+        setErrors({...errors, password:isValidPasswordError})
     }
 
     return (
@@ -96,7 +97,7 @@ export default function Login() {
                         value={userEmail}
                         onChange={ (e) => {
                             setUserEmail(e.target.value);
-                            isUsrValid();
+                            isUsrValid(e.target.value)
                         }}
                     />
                     <TextField
@@ -112,7 +113,7 @@ export default function Login() {
                         value={password}
                         onChange={ (e) => {
                             setPassword(e.target.value);
-                            isPassValid();
+                            isPassValid(e.target.value)
                         }}
                     />
                     {!loading ?

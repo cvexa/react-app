@@ -11,6 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {useState} from "react";
+import {isEmailValid} from "../../utils/validations.js";
 
 export default function Register() {
     const usrObjLayout = {
@@ -19,23 +20,35 @@ export default function Register() {
         password:'',
         cPassword:''
     };
+
+    const errorsLayout = {
+        firstName:'Should be least 3 characters',
+        lastName:'Should be least 3 characters',
+        password:'',
+        cPassword:''
+    }
     const [userObj, setUserObj] = useState(usrObjLayout);
 
-    const [errors, setErrors] = useState(usrObjLayout);
+    const [errors, setErrors] = useState({});
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log(data);
     }
-    console.log(errors);
-    const validateName = () => {
-        if(userObj.firstName.length < 3){
-            setErrors({...errors, firstName:true})
+
+    const validateName = (nameObj) => {
+        let fNameError = false;
+        let lNameError = false;
+        if(nameObj.firstName.length < 3){
+            fNameError = true;
         }
-        if(userObj.lastName.length < 3){
+        if(nameObj.lastName.length < 3){
             setErrors({...errors, lastName:true})
+            lNameError = true;
         }
+
+        setErrors({...errors, firstName:fNameError, lastName:lNameError});
     }
 
     return (
@@ -55,7 +68,7 @@ export default function Register() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -66,12 +79,12 @@ export default function Register() {
                                     id="firstName"
                                     label="First Name"
                                     error={typeof errors.firstName === 'string' ? false : errors.firstName}
-                                    helperText={errors.firstName}
+                                    helperText={errorsLayout.firstName}
                                     autoFocus
                                     value={userObj.firstName}
                                     onChange={(e) => {
                                       setUserObj({...userObj, firstName: e.target.value});
-                                      validateName();
+                                      validateName({firstName: e.target.value , lastName: userObj.lastName});
                                     }}
                                 />
                             </Grid>
@@ -83,11 +96,12 @@ export default function Register() {
                                     label="Last Name"
                                     name="lastName"
                                     error={typeof errors.lastName === 'string' ? false : errors.lastName}
+                                    helperText={errorsLayout.lastName}
                                     autoComplete="family-name"
                                     value={userObj.lastName}
                                     onChange={(e) => {
                                         setUserObj({...userObj, lastName: e.target.value});
-                                        validateName();
+                                        validateName({firstName: userObj.firstName, lastName: e.target.value})
                                     }}
                                 />
                             </Grid>

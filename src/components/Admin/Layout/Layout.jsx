@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import * as React from "react";
 import drawerWidth from "../SideBar/SideBar.jsx";
 
-export default function Layout(props) {
+export default function AdminLayout(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <SideBar />

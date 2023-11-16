@@ -12,7 +12,8 @@ import Container from '@mui/material/Container';
 import {logIn} from '../../services/user.jsx'
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../contexts/User.jsx";
-import {Alert} from "@mui/material";
+import {Alert, CircularProgress} from "@mui/material";
+import {isEmailValid, isPasswordValid} from "../../utils/validations.js"
 
 export default function Login() {
     const [userEmail, setUserEmail] = useState('');
@@ -26,13 +27,16 @@ export default function Login() {
     const [loginError, setLoginError] = useState(false);
     const navigate = useNavigate();
     const { user, setUser } = useUserContext();
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if(!errors.email && !errors.password) {
+            setLoading(true);
             try{
                 logIn({email: data.get('email'), password: data.get('password')}).then( (res) => {
+                    setLoading(false);
                     if(res.success) {
                         setUser(res.data);//to do store user token into user context to be used on the app later
                         navigate('/dashboard');
@@ -46,20 +50,20 @@ export default function Login() {
         }
     };
 
-    const isUsrValid = () => {
-        if(userEmail.length < 1 || !/\S+@\S+\.\S+/.test(userEmail)){
-           setErrors({...errors, email:true})
-        }else {
-            setErrors({...errors, email: false});
+    const isUsrValid = (user) => {
+        let isVaildEmailError = false;
+        if(!isEmailValid(user)){
+            isVaildEmailError = true
         }
+        setErrors({...errors, email:isVaildEmailError})
     }
 
-    const isPassValid = () => {
-        if(password.length < 6 || !/^(?=.{6,}$)\D*\d/.test(password)){
-            setErrors({...errors, password:true})
-        }else {
-            setErrors({...errors, password:false})
+    const isPassValid = (pass) => {
+        let isValidPasswordError = false;
+        if(!isPasswordValid(pass)){
+            isValidPasswordError = true
         }
+        setErrors({...errors, password:isValidPasswordError})
     }
 
     return (
@@ -93,7 +97,7 @@ export default function Login() {
                         value={userEmail}
                         onChange={ (e) => {
                             setUserEmail(e.target.value);
-                            isUsrValid();
+                            isUsrValid(e.target.value)
                         }}
                     />
                     <TextField
@@ -109,17 +113,23 @@ export default function Login() {
                         value={password}
                         onChange={ (e) => {
                             setPassword(e.target.value);
-                            isPassValid();
+                            isPassValid(e.target.value)
                         }}
                     />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Sign In
-                    </Button>
+                    {!loading ?
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                        >
+                            Sign In
+                        </Button>
+                        :
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress />
+                        </Box>
+                    }
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">

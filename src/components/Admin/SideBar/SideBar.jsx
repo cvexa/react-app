@@ -6,8 +6,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import * as React from 'react';
-import PropTypes from "prop-types";
-import ResponsiveDrawer from "../Dashboard/Dashboard.jsx";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -17,14 +15,18 @@ import InboxIcon from "@mui/icons-material/MoveToInbox.js";
 import MailIcon from "@mui/icons-material/Mail.js";
 import ListItemText from "@mui/material/ListItemText";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useLocation } from "react-router-dom";
+import {useLocation, Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useUserContext} from "../../../contexts/User.jsx";
+import PeopleIcon from '@mui/icons-material/People';
 
 export const drawerWidth = 240;
 
 export default function SideBar(props) {
+    const { user, setUser } = useUserContext();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const nvaigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -38,37 +40,43 @@ export default function SideBar(props) {
 
     useEffect(() => {
         setPath(location.pathname);
-    }, []);
+    }, [location.pathname]);
+
+    const menuItems = {'Dashboard':'/dashboard', 'Users':'/users', 'Feedback':'/feedback', 'Home':'/'};
+
+    const handleLogOut = () => {
+        console.log('here');
+        setUser({});
+        nvaigate('/');
+    }
 
     const drawer = (
         <div>
             <Toolbar />
             <Divider />
             <List>
-                {['Dashboard', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton selected={'/'+text.toLowerCase() === path ? true : false}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
+                {Object.keys(menuItems).map((textKey, i) => (
+                    <Link key={textKey} to={menuItems[textKey]}>
+                        <ListItem key={textKey} disablePadding sx={{color:"#000"}}>
+                            <ListItemButton selected={'/'+textKey.toLowerCase() === path ? true : false}>
+                                <ListItemIcon>
+                                    {i === 1 ? <PeopleIcon /> : <MailIcon />}
+                                </ListItemIcon>
+                                <ListItemText primary={textKey} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
                 ))}
+                <ListItem disablePadding sx={{color:"#000"}} onClick={handleLogOut}>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Log out'} />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
         </div>
     );
 

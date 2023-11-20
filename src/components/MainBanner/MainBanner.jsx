@@ -16,7 +16,7 @@ export default function MainBanner() {
 
     useEffect( () => {
         try {
-            GetTop(user.token).then((res) => {
+            GetTop(user.token, 3).then((res) => {
                 if(!res.message) {
                     setProperties(res);
                 }else {

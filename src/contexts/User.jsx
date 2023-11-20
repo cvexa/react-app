@@ -13,6 +13,7 @@ export function UserProvider({ children }) {
             value={{
                 user,
                 setUser: (user) => {
+                    localStorage.clear();
                     setUser(user);
                     setUserToState(user);
                 },

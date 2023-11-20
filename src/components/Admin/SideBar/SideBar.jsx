@@ -19,6 +19,7 @@ import {useLocation, Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useUserContext} from "../../../contexts/User.jsx";
 import PeopleIcon from '@mui/icons-material/People';
+import {logOut} from "../../../services/user.jsx";
 
 export const drawerWidth = 240;
 
@@ -45,9 +46,12 @@ export default function SideBar(props) {
     const menuItems = {'Dashboard':'/dashboard', 'Users':'/users', 'Feedback':'/feedback', 'Home':'/'};
 
     const handleLogOut = () => {
-        console.log('here');
-        setUser({});
-        nvaigate('/');
+        logOut().then((response) => {
+            localStorage.clear();
+            setUser({});
+            nvaigate('/');
+        });
+
     }
 
     const drawer = (

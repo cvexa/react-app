@@ -1,30 +1,52 @@
+import React from "react";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import {useEffect, useState} from "react";
+import {GetTop} from "../../services/properties.jsx";
+import {useUserContext} from "../../contexts/User.jsx";
+import {CircularProgress} from "@mui/material";
+import Box from "@mui/material/Box";
+import {useNavigate} from "react-router-dom";
 
 export default function MainBanner() {
+    const [properties, setProperties] = useState([]);
+    const { user, setUser } = useUserContext();
+    const navigate = useNavigate();
+
+    useEffect( () => {
+        try {
+            GetTop(user.token).then((res) => {
+                if(!res.message) {
+                    setProperties(res);
+                }else {
+                    throw new Error(res.message);
+                }
+            });
+        }catch (e) {//to do what to do when error come in on home page
+            navigate('/')
+        }
+    }, []);
+
     return (
         <div className="main-banner">
+            {properties.length > 1 ?
                 <OwlCarousel items={1} className="owl-carousel owl-banner main-banner" loop margin={10} nav>
-                    <div className="item item-1">
-                        <div className="header-text">
-                            <span className="category">Toronto, <em>Canada</em></span>
-                            <h2>Hurry!<br/>Get the Best Villa for you</h2>
-                        </div>
-                    </div>
-                    <div className="item item-2">
-                        <div className="header-text">
-                            <span className="category">Melbourne, <em>Australia</em></span>
-                            <h2>Be Quick!<br/>Get the best villa in town</h2>
-                        </div>
-                    </div>
-                    <div className="item item-3">
-                        <div className="header-text">
-                            <span className="category">Miami, <em>South Florida</em></span>
-                            <h2>Act Now!<br/>Get the highest level penthouse</h2>
-                        </div>
-                    </div>
+                    {properties.map((property, key) => {
+                       return (
+                            <div key={key} className="item" style={{backgroundImage: `url(${property.pic})`}}>
+                                <div className="header-text">
+                                    <span className="category">{property.location}</span>
+                                    <h2>{property.title}</h2>
+                                </div>
+                            </div>
+                       );
+                    })}
                 </OwlCarousel>
+            : <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress size={'10rem'} />
+                </Box>
+            }
         </div>
     );
 }

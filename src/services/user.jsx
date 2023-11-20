@@ -1,9 +1,4 @@
-const baseUrl = 'http://localhost:8000/api/'
-const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: ''
-};
+import {baseUrl, requestOptions} from "../utils/requestHelper.js";
 
 export async function logIn(data) {
     requestOptions.method = 'POST';

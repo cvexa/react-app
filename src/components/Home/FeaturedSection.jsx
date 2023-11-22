@@ -5,6 +5,7 @@ import {GetFeatured} from "../../services/properties.jsx";
 import {useNavigate, Link} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
 import Box from "@mui/material/Box";
+import PropertyInfoSideBar from "./PropertyInfoSideBar.jsx";
 
 export default function FeaturedSection() {
     const [featuredProperty, setFeaturedProperty] = useState({});
@@ -97,26 +98,7 @@ export default function FeaturedSection() {
                             </div>
                         </div>
                         <div className="col-lg-3">
-                            <div className="info-table">
-                                <ul>
-                                    <li>
-                                        <img src="assets/images/info-icon-01.png" className={styles.featIco} alt=""/>
-                                        <h4>{featuredProperty.quadrature}<br/><span>Total Flat Space </span></h4>
-                                    </li>
-                                    <li>
-                                        <img src="assets/images/info-icon-02.png" className={styles.featIco} alt=""/>
-                                        <h4>Contract<br/><span>{featuredProperty.contract}</span></h4>
-                                    </li>
-                                    <li>
-                                        <img src="assets/images/info-icon-03.png" className={styles.featIco} alt=""/>
-                                        <h4>Payment<br/><span>{featuredProperty.payment_process}</span></h4>
-                                    </li>
-                                    <li>
-                                        <img src="assets/images/info-icon-04.png" className={styles.featIco} alt=""/>
-                                        <h4>Safety<br/><span>{featuredProperty.safety}</span></h4>
-                                    </li>
-                                </ul>
-                            </div>
+                            <PropertyInfoSideBar property={featuredProperty} />
                         </div>
                     </div>
                     :

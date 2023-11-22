@@ -3,6 +3,7 @@ import {getPaginatedProperties} from "../../services/properties.jsx";
 import {CircularProgress, Pagination} from "@mui/material";
 import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
+import PropertyBox from "./PropertyBox";
 
 export default function ListOfProperties() {
     const [properties, setProperties] = useState([]);
@@ -45,26 +46,8 @@ export default function ListOfProperties() {
                 </div>
                 <div className="row">
                     {properties.data ?
-                        properties.data.map((property, key) => {
-                            return <div key={key} className="col-lg-4 col-md-6">
-                                <div className="item">
-                                    <a href="property-details.html"><img src="assets/images/property-01.jpg"
-                                                                         alt=""/></a>
-                                    <span className="category" style={{textTransform: 'capitalize'}}>{property.type}</span>
-                                    <h6>${property.price}</h6>
-                                    <h4><a href="property-details.html">{property.title}</a></h4>
-                                    <ul>
-                                        <li>Safety: <span>{property.safety}</span></li>
-                                        <li>Number of rooms: <span>{property.number_of_rooms}</span></li>
-                                        <li>Area: <span>{property.quadrature}m2</span></li>
-                                        <li>Floor: <span>{property.floor_number}</span></li>
-                                        <li>Parking: <span>{property.with_parking === 1 ? 'yes' : 'no'}</span></li>
-                                    </ul>
-                                    <div className="main-button">
-                                        <Link to={`/property/${property.id}`}>view more</Link>
-                                    </div>
-                                </div>
-                            </div>
+                        properties.data.map((property) => {
+                            return <PropertyBox key={property.id} property={property}/>
                         })
                         :
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

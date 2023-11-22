@@ -39,3 +39,11 @@ export async function getPaginatedProperties(perPage, page) {
         return data;
     })
 }
+
+export async function GetPropertyById(id) {
+    requestOptions.method = 'GET';
+
+    return await fetch(`${baseUrl}properties/${id}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
+        return data;
+    })
+}

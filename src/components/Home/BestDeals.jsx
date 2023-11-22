@@ -1,12 +1,11 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GetBestDealPropertyByTypes, GetPropertyTypes} from "../../services/properties.jsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 
 export default function BestDeals() {
     const [propertyTypes, setPropertyTypes] = useState({});
-    const [propertiesByType, setPropertiesByType] = useState([]);
     const [bestDeal, setBestDeal] = useState({});
     const navigate = useNavigate();
 
@@ -135,9 +134,12 @@ export default function BestDeals() {
                                                         <p>
                                                             {bestDeal.description}
                                                         </p>
-                                                        <div className="icon-button">
-                                                            <a href="property-details.html"><i
-                                                                className="fa fa-calendar"></i> Schedule a visit</a>
+                                                        <div className="icon-button text-center">
+                                                            <Link to={`/property/${bestDeal.id}`}>
+                                                                <i
+                                                                    className="fa fa-calendar"></i>
+                                                                view more
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -147,112 +149,6 @@ export default function BestDeals() {
                                                 <CircularProgress size={'10rem'}/>
                                             </Box>
                                         }
-                                        {/*<div className="tab-pane fade show active" id="appartment" role="tabpanel"*/}
-                                        {/*     aria-labelledby="appartment-tab">*/}
-                                        {/*    <div className="row">*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <div className="info-table">*/}
-                                        {/*                <ul>*/}
-                                        {/*                    <li>Total Flat Space <span>185 m2</span></li>*/}
-                                        {/*                    <li>Floor number <span>26th</span></li>*/}
-                                        {/*                    <li>Number of rooms <span>4</span></li>*/}
-                                        {/*                    <li>Parking Available <span>Yes</span></li>*/}
-                                        {/*                    <li>Payment Process <span>Bank</span></li>*/}
-                                        {/*                </ul>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-6">*/}
-                                        {/*            <img src="assets/images/deal-01.jpg" alt=""/>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <h4>Extra Info About Property</h4>*/}
-                                        {/*            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do*/}
-                                        {/*                eiusmod*/}
-                                        {/*                tempor pack incididunt ut labore et dolore magna aliqua quised*/}
-                                        {/*                ipsum*/}
-                                        {/*                suspendisse.*/}
-                                        {/*                <br/><br/>When you need free CSS templates, you can simply type*/}
-                                        {/*                TemplateMo*/}
-                                        {/*                in any search engine website. In addition, you can type*/}
-                                        {/*                TemplateMo*/}
-                                        {/*                Portfolio, TemplateMo One Page Layouts, etc.</p>*/}
-                                        {/*            <div className="icon-button">*/}
-                                        {/*                <a href="property-details.html"><i*/}
-                                        {/*                    className="fa fa-calendar"></i> Schedule a visit</a>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
-                                        {/*<div className="tab-pane fade" id="villa" role="tabpanel"*/}
-                                        {/*     aria-labelledby="villa-tab">*/}
-                                        {/*    <div className="row">*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <div className="info-table">*/}
-                                        {/*                <ul>*/}
-                                        {/*                    <li>Total Flat Space <span>250 m2</span></li>*/}
-                                        {/*                    <li>Floor number <span>26th</span></li>*/}
-                                        {/*                    <li>Number of rooms <span>5</span></li>*/}
-                                        {/*                    <li>Parking Available <span>Yes</span></li>*/}
-                                        {/*                    <li>Payment Process <span>Bank</span></li>*/}
-                                        {/*                </ul>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-6">*/}
-                                        {/*            <img src="assets/images/deal-02.jpg" alt=""/>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <h4>Detail Info About Villa</h4>*/}
-                                        {/*            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do*/}
-                                        {/*                eiusmod*/}
-                                        {/*                tempor pack incididunt ut labore et dolore magna aliqua quised*/}
-                                        {/*                ipsum*/}
-                                        {/*                suspendisse. <br/><br/>Swag fanny pack lyft blog twee. JOMO*/}
-                                        {/*                ethical copper*/}
-                                        {/*                mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie*/}
-                                        {/*                hella venmo after messenger poutine next level humblebr/ag swag*/}
-                                        {/*                franzen.</p>*/}
-                                        {/*            <div className="icon-button">*/}
-                                        {/*                <a href="property-details.html"><i*/}
-                                        {/*                    className="fa fa-calendar"></i> Schedule a visit</a>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
-                                        {/*<div className="tab-pane fade" id="penthouse" role="tabpanel"*/}
-                                        {/*     aria-labelledby="penthouse-tab">*/}
-                                        {/*    <div className="row">*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <div className="info-table">*/}
-                                        {/*                <ul>*/}
-                                        {/*                    <li>Total Flat Space <span>320 m2</span></li>*/}
-                                        {/*                    <li>Floor number <span>34th</span></li>*/}
-                                        {/*                    <li>Number of rooms <span>6</span></li>*/}
-                                        {/*                    <li>Parking Available <span>Yes</span></li>*/}
-                                        {/*                    <li>Payment Process <span>Bank</span></li>*/}
-                                        {/*                </ul>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-6">*/}
-                                        {/*            <img src="assets/images/deal-03.jpg" alt=""/>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="col-lg-3">*/}
-                                        {/*            <h4>Extra Info About Penthouse</h4>*/}
-                                        {/*            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do*/}
-                                        {/*                eiusmod*/}
-                                        {/*                tempor pack incididunt ut labore et dolore magna aliqua quised*/}
-                                        {/*                ipsum*/}
-                                        {/*                suspendisse. <br/><br/>Swag fanny pack lyft blog twee. JOMO*/}
-                                        {/*                ethical copper*/}
-                                        {/*                mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie*/}
-                                        {/*                hella venmo after messenger poutine next level humblebr/ag swag*/}
-                                        {/*                franzen.</p>*/}
-                                        {/*            <div className="icon-button">*/}
-                                        {/*                <a href="property-details.html"><i*/}
-                                        {/*                    className="fa fa-calendar"></i> Schedule a visit</a>*/}
-                                        {/*            </div>*/}
-                                        {/*        </div>*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
                                     </div>
                                 </div>
                             </div>

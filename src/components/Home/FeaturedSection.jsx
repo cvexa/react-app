@@ -31,7 +31,7 @@ export default function FeaturedSection() {
                         <div className="col-lg-4">
                             <div className="left-image">
                                 <img src={featuredProperty.pic} alt="photo"/>
-                                <Link to={'/'}><img src="assets/images/featured-icon.png"
+                                <Link to={`/property/${featuredProperty.id}`}><img src="assets/images/featured-icon.png"
                                                                      className={styles.featMainIco} alt=""/></Link>
                             </div>
                         </div>

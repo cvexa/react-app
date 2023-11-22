@@ -31,3 +31,11 @@ export async function GetBestDealPropertyByTypes(type) {
         return data;
     })
 }
+
+export async function getPaginatedProperties(perPage, page) {
+    requestOptions.method = 'GET';
+
+    return await fetch(`${baseUrl}properties?per_page=${perPage ?? 10}&page=${page}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
+        return data;
+    })
+}

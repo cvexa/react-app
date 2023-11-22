@@ -11,6 +11,7 @@ import AdminLayout from "../Admin/Layout/Layout";
 import Users from "../Admin/Users/Users";
 import Feedback from "../Admin/Feedback/Feedback.jsx";
 import GenericNotFound from "../GenericNotFound/GenericNotFound.jsx";
+import SingleProperty from "../SingleProperty/SingleProperty.jsx";
 
 export default function AppRouter(props) {
     const { user, setUser } = useUserContext();
@@ -21,6 +22,7 @@ export default function AppRouter(props) {
         <Route path={`${props.match}/register`} exact element={<PublicLayout><Register/></PublicLayout>}/> {/*//to do redirect if user is logged in*/}
         <Route path={`${props.match}/contacts`} exact element={<PublicLayout><Contacts /></PublicLayout>}/>
         <Route path={`${props.match}/properties`} exact element={<PublicLayout><ListOfProperties /></PublicLayout>}/>
+        <Route path={`${props.match}/property/:id`} exact element={<PublicLayout><SingleProperty/></PublicLayout>}/>
         <Route path={`${props.match}/dashboard`} exact element={user.id ? <AdminLayout><Dashboard/></AdminLayout> : <GenericNotFound />}/>
         <Route path={`${props.match}/users`} exact element={user.id ? <AdminLayout><Users/></AdminLayout> : <GenericNotFound />}/>
         <Route path={`${props.match}/feedback`} exact element={user.id ? <AdminLayout><Feedback/></AdminLayout> : <GenericNotFound />}/>

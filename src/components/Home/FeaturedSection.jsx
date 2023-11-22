@@ -101,7 +101,7 @@ export default function FeaturedSection() {
                                 <ul>
                                     <li>
                                         <img src="assets/images/info-icon-01.png" className={styles.featIco} alt=""/>
-                                        <h4>{featuredProperty.quadrature}<br/><span>Total </span></h4>
+                                        <h4>{featuredProperty.quadrature}<br/><span>Total Flat Space </span></h4>
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-02.png" className={styles.featIco} alt=""/>

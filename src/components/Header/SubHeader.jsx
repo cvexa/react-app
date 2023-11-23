@@ -10,8 +10,8 @@ export default function SubHeader() {
                 <div className="row">
                     <div className="col-lg-8 col-md-8">
                         <ul className="info">
-                            <li><i className="fa fa-envelope"></i> info@company.com</li>
-                            <li><i className="fa fa-map"></i> Sunny Isles Beach, FL 33160</li>
+                            <li><i className="fa fa-envelope"></i> svetoslav.vasilev@volasoftware.com</li>
+                            <li><i className="fa fa-map"></i>Vratsa, Bulgaria</li>
                         </ul>
                     </div>
                     {!user.token &&

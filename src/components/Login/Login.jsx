@@ -38,7 +38,7 @@ export default function Login() {
                 logIn({email: data.get('email'), password: data.get('password')}).then( (res) => {
                     setLoading(false);
                     if(res.success) {
-                        setUser(res.data);//to do store user token into user context to be used on the app later
+                        setUser(res.data);
                         navigate('/dashboard');
                     }else{
                         setLoginError(res.message);

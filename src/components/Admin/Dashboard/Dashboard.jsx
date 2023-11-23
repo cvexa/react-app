@@ -1,16 +1,20 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
 import {useUserContext} from "../../../contexts/User.jsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { DataGrid } from '@mui/x-data-grid';
+import {GetTop} from "../../../services/properties.jsx";
 
 
 function Dashboard() {
     const { user, setUser } = useUserContext();
+    const [properties, setProperties] = useState({});
 
     useEffect(() => {
-        console.log(user);
-        console.log('user context');
+        try {
+            // GetTop
+        }catch (e) {
+            console.log(e);
+        }
     },[]);
 
     const columns = [

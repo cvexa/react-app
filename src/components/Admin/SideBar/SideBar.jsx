@@ -19,6 +19,7 @@ import {useLocation, Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useUserContext} from "../../../contexts/User.jsx";
 import PeopleIcon from '@mui/icons-material/People';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import {logOut} from "../../../services/user.jsx";
 
 export const drawerWidth = 240;
@@ -28,6 +29,7 @@ export default function SideBar(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const nvaigate = useNavigate();
+    const [menuItems, setMenuItems] = useState({});
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -43,7 +45,38 @@ export default function SideBar(props) {
         setPath(location.pathname);
     }, [location.pathname]);
 
-    const menuItems = {'Dashboard':'/dashboard', 'Users':'/users', 'Feedback':'/feedback', 'Home':'/'};
+    // const menuItems = {'Dashboard':'/dashboard', 'Users':'/users','Home':'/'};
+
+    const adminItems = {
+        'Dashboard':
+            {
+                url:'/dashboard',
+                icon : <DashboardIcon />
+            },
+        'Users':
+            {
+                link: '/users',
+                icon: <PeopleIcon />
+            },
+        'Home':
+            {
+                url:'/',
+                icon: <PeopleIcon />
+            }
+    };
+
+    const userItems = {
+        Dashboard : {...adminItems.Dashboard},
+        Home: {...adminItems.Home}
+    };
+
+    useEffect( () => {
+        if(user.role === 'user') {
+            setMenuItems(userItems);
+        }else{
+            setMenuItems(adminItems);
+        }
+    }, [])
 
     const handleLogOut = () => {
         logOut().then((response) => {
@@ -51,7 +84,6 @@ export default function SideBar(props) {
             setUser({});
             nvaigate('/');
         });
-
     }
 
     const drawer = (
@@ -59,12 +91,12 @@ export default function SideBar(props) {
             <Toolbar />
             <Divider />
             <List>
-                {Object.keys(menuItems).map((textKey, i) => (
-                    <Link key={textKey} to={menuItems[textKey]}>
+                {menuItems && Object.keys(menuItems).map((textKey, i) => (
+                    <Link key={textKey} to={menuItems[textKey].url}>
                         <ListItem key={textKey} disablePadding sx={{color:"#000"}}>
                             <ListItemButton selected={'/'+textKey.toLowerCase() === path ? true : false}>
                                 <ListItemIcon>
-                                    {i === 1 ? <PeopleIcon /> : <MailIcon />}
+                                    {menuItems[textKey].icon}
                                 </ListItemIcon>
                                 <ListItemText primary={textKey} />
                             </ListItemButton>
@@ -106,7 +138,7 @@ export default function SideBar(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Responsive drawer
+                        Administration
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -115,7 +147,6 @@ export default function SideBar(props) {
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
                 aria-label="mailbox folders"
             >
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
                     container={container}
                     variant="temporary"

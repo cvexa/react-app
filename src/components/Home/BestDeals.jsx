@@ -3,7 +3,6 @@ import {GetBestDealPropertyByTypes, GetPropertyTypes} from "../../services/prope
 import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
-import PropertyInfoSideBar from "./PropertyInfoSideBar.jsx";
 
 export default function BestDeals() {
     const [propertyTypes, setPropertyTypes] = useState({});

@@ -1,6 +1,6 @@
 import PropertyInfoSideBar from "../Home/PropertyInfoSideBar.jsx";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {GetPropertyById} from "../../services/properties.jsx";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
@@ -9,6 +9,7 @@ import React from "react";
 export default function SingleProperty() {
     const [property, setProperty] = useState();
     const {id} = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         try {
@@ -49,6 +50,12 @@ export default function SingleProperty() {
                             </div>
                             <div className="col-lg-4">
                                 <PropertyInfoSideBar property={property}/>
+                            </div>
+                            <div className="main-button">
+                                <a href='#' onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(-1);
+                                }}>back</a>
                             </div>
                         </div>
                     </div>

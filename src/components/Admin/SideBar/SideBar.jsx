@@ -79,11 +79,12 @@ export default function SideBar(props) {
     }, [])
 
     const handleLogOut = () => {
-        logOut().then((response) => {
+        logOut().finally( () => {
             localStorage.clear();
             setUser({});
             nvaigate('/');
         });
+
     }
 
     const drawer = (

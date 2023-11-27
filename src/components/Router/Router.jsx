@@ -12,9 +12,9 @@ import Users from "../Admin/Users/Users";
 import Feedback from "../Admin/Feedback/Feedback.jsx";
 import GenericNotFound from "../GenericNotFound/GenericNotFound.jsx";
 import SingleProperty from "../SingleProperty/SingleProperty.jsx";
+import AuthGuard from "../../guards/AuthGuard.jsx";
 
 export default function AppRouter(props) {
-    const { user, setUser } = useUserContext();
 
     return (<Routes>
         <Route path={`${props.match}/`} exact element={<PublicLayout><Home/></PublicLayout>}/>
@@ -23,9 +23,11 @@ export default function AppRouter(props) {
         <Route path={`${props.match}/contacts`} exact element={<PublicLayout><Contacts /></PublicLayout>}/>
         <Route path={`${props.match}/properties`} exact element={<PublicLayout><ListOfProperties /></PublicLayout>}/>
         <Route path={`${props.match}/property/:id`} exact element={<PublicLayout><SingleProperty/></PublicLayout>}/>
-        <Route path={`${props.match}/dashboard`} exact element={user.id ? <AdminLayout><Dashboard/></AdminLayout> : <GenericNotFound />}/>
-        <Route path={`${props.match}/users`} exact element={user.id ? <AdminLayout><Users/></AdminLayout> : <GenericNotFound />}/>
-        <Route path={`${props.match}/feedback`} exact element={user.id ? <AdminLayout><Feedback/></AdminLayout> : <GenericNotFound />}/>
+        <Route element={<AuthGuard />}>
+            <Route path={`${props.match}/dashboard`} exact element={<AdminLayout><Dashboard/></AdminLayout>}/>
+            <Route path={`${props.match}/users`} exact element={<AdminLayout><Users/></AdminLayout>}/>
+            <Route path={`${props.match}/feedback`} exact element={<AdminLayout><Feedback/></AdminLayout>}/>
+        </Route>
         <Route path="*" element={<GenericNotFound />} />
     </Routes>)
 }

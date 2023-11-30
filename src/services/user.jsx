@@ -40,3 +40,31 @@ export async function getPaginatedUsers(perPage, page) {
         return data;
     });
 }
+
+export async function getUserById(id) {
+    let userToken = getUser().token;
+    requestOptions.method = 'GET';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`}
+
+    return await fetch(`${baseUrl}users/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
+}
+
+export async function updateUserById(id, data) {
+    let userToken = getUser().token;
+    requestOptions.method = 'PUT';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    requestOptions.body = JSON.stringify({...data});
+
+    return await fetch(`${baseUrl}users/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: requestOptions.body
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
+}

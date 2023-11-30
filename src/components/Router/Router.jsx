@@ -13,6 +13,7 @@ import Feedback from "../Admin/Feedback/Feedback.jsx";
 import GenericNotFound from "../GenericNotFound/GenericNotFound.jsx";
 import SingleProperty from "../SingleProperty/SingleProperty.jsx";
 import AuthGuard from "../../guards/AuthGuard.jsx";
+import Profile from "../Profile/Profile.jsx";
 
 export default function AppRouter(props) {
 
@@ -20,13 +21,14 @@ export default function AppRouter(props) {
         <Route path={`${props.match}/`} exact element={<PublicLayout><Home/></PublicLayout>}/>
         <Route path={`${props.match}/login`} exact element={<PublicLayout><Login/></PublicLayout>}/> {/*//to do redirect if user is logged in*/}
         <Route path={`${props.match}/register`} exact element={<PublicLayout><Register/></PublicLayout>}/> {/*//to do redirect if user is logged in*/}
-        <Route path={`${props.match}/contacts`} exact element={<PublicLayout><Contacts /></PublicLayout>}/>
-        <Route path={`${props.match}/properties`} exact element={<PublicLayout><ListOfProperties /></PublicLayout>}/>
+        <Route path={`${props.match}/contacts`} exact element={<PublicLayout><Contacts/></PublicLayout>}/>
+        <Route path={`${props.match}/properties`} exact element={<PublicLayout><ListOfProperties/></PublicLayout>}/>
         <Route path={`${props.match}/property/:id`} exact element={<PublicLayout><SingleProperty/></PublicLayout>}/>
         <Route element={<AuthGuard />}>
             <Route path={`${props.match}/dashboard`} exact element={<AdminLayout><Dashboard/></AdminLayout>}/>
             <Route path={`${props.match}/users`} exact element={<AdminLayout><Users/></AdminLayout>}/>
             <Route path={`${props.match}/feedback`} exact element={<AdminLayout><Feedback/></AdminLayout>}/>
+            <Route path={`${props.match}/my-profile`} exact element={<AdminLayout><Profile/></AdminLayout>}/>
         </Route>
         <Route path="*" element={<GenericNotFound />} />
     </Routes>)

@@ -20,6 +20,8 @@ import {useEffect, useState} from "react";
 import {useUserContext} from "../../../contexts/User.jsx";
 import PeopleIcon from '@mui/icons-material/People';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeIcon from '@mui/icons-material/Home';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {logOut} from "../../../services/user.jsx";
 
 export const drawerWidth = 240;
@@ -55,18 +57,24 @@ export default function SideBar(props) {
             },
         'Users':
             {
-                link: '/users',
+                url: '/users',
                 icon: <PeopleIcon />
             },
         'Home':
             {
                 url:'/',
-                icon: <PeopleIcon />
+                icon: <HomeIcon />
+            },
+        'Profile':
+            {
+                url:'/my-profile',
+                icon: <ManageAccountsIcon />
             }
     };
 
     const userItems = {
         Dashboard : {...adminItems.Dashboard},
+        Profile: {...adminItems.Profile},
         Home: {...adminItems.Home}
     };
 

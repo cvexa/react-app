@@ -1,53 +1,76 @@
-import {DataGrid} from "@mui/x-data-grid";
-import * as React from "react";
+import React, {useEffect, useState} from "react";
+import {useUserContext} from "../../../contexts/User.jsx";
+import {useNavigate} from "react-router-dom";
+import Button from "@mui/material/Button";
+import PaginatedTable from "../PaginatedTable/PaginatedTable.jsx";
+import {getPaginatedUsers} from "../../../services/user.jsx";
+import {usersTableSkeleton} from "../../../utils/users.js";
 
 export default function Users() {
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
-        {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            width: 90,
-        },
-        {
-            field: 'fullName',
-            headerName: 'Full name',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 160,
-            valueGetter: (params) =>
-                `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-        },
-    ];
+    const { user, setUser } = useUserContext();
+    const [users, setUsers] = useState([]);
+    const perPage = 1;
+    const [pagination, setPagination] = useState({
+        page:0,
+        count:0,
+    });
+    const navigate = useNavigate();
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
+    useEffect(() => {
+        try {
+            getPaginatedUsers(perPage).then( (res) => {
+                setUsers(res.data);
+                setPagination({
+                    page: res.current_page,
+                    count: res.last_page,
+                })
+            });
+        }catch (e) {
+            console.log(e);
+        }
+    },[]);
+
+    const handleChangePage = (event, page) => {
+        getPaginatedUsers(perPage, page).then( (res) => {
+            setUsers(res.data);
+            setPagination({
+                page: res.current_page,
+                count: res.last_page
+            })
+        });
+    };
+
+    const onViewClickHandler = (id) => {
+        console.log(id);
+    }
+
+    const onEditClickHandler = (id) => {
+        console.log(id);
+    }
+
+    const onDeleteClickHandler = (id) => {
+        console.log(id);
+    }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
-                    },
-                }}
-                pageSizeOptions={[5, 10]}
-                // checkboxSelection
-            />
-        </div>
+        <>
+            <h2 style={{marginBottom:"2%"}}>Users</h2>
+            <div style={{marginBottom:"2%"}}>
+                <Button variant="outlined" size="small">
+                    Create
+                </Button>
+            </div>
+            <div style={{ height: 400, width: '100%' }}>
+                {users &&
+                    <>
+                        <PaginatedTable rowsData={users} pagination={pagination} tableDataSkeleton={usersTableSkeleton} handlePageChange={handleChangePage} actions={{
+                            onViewClickHandler : onViewClickHandler,
+                            onEditClickHandler : onEditClickHandler,
+                            onDeleteClickHandler : onDeleteClickHandler
+                        }}/>
+                    </>
+                }
+            </div>
+        </>
     );
 }

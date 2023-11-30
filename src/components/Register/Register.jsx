@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import {Checkbox, FormControlLabel, ThemeProvider} from "@mui/material";
+import {Alert, Checkbox, CircularProgress, FormControlLabel, ThemeProvider} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import {Copyright} from "@mui/icons-material";
 import Container from "@mui/material/Container";
@@ -10,13 +10,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {useState} from "react";
-import {isEmailValid} from "../../utils/validations.js";
+import React, {useState} from "react";
+import {isEmailValid, isPasswordValid} from "../../utils/validations.js";
+import {register} from "../../services/user.jsx";
+import {useUserContext} from "../../contexts/User.jsx";
 
 export default function Register() {
     const usrObjLayout = {
         firstName:'',
         lastName:'',
+        email:'',
         password:'',
         cPassword:''
     };
@@ -24,17 +27,34 @@ export default function Register() {
     const errorsLayout = {
         firstName:'Should be least 3 characters',
         lastName:'Should be least 3 characters',
-        password:'',
-        cPassword:''
+        email:'Should be a valid email',
+        password:'Password should be least 6 characters and include atleast one number',
+        cPassword:'Password should be least 6 characters and include atleast one number',
     }
+    const { user, setUser } = useUserContext();
     const [userObj, setUserObj] = useState(usrObjLayout);
-
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const [registerError, setRegisterError] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log(data);
+        try {
+            let name = userObj.firstName + ' ' + userObj.lastName;
+            register({...userObj, name: name, c_password: userObj.cPassword}).then( (res) => {
+                setLoading(false);
+                if(res.success) {
+                    setUser(res.data);
+                    navigate('/dashboard');
+                }else{
+                    setRegisterError(res.data[0]);
+                    console.log(res);
+                }
+            });
+        }catch(e) {
+            setRegisterError(e.data);
+        }
     }
 
     const validateName = (nameObj) => {
@@ -49,6 +69,33 @@ export default function Register() {
         }
 
         setErrors({...errors, firstName:fNameError, lastName:lNameError});
+    }
+
+    const validateEmail = (email) => {
+        let isVaildEmailError = false;
+        if(!isEmailValid(email)){
+            isVaildEmailError = true
+        }
+        setErrors({...errors, email:isVaildEmailError})
+    }
+
+    const validatePassword = (passwObj) => {
+        let passwordError = false;
+        let cPasswordError = false;
+        if(!isPasswordValid(passwObj.password)){
+            passwordError = true;
+        }
+
+        if (!isPasswordValid(passwObj.cPassword)) {
+            cPasswordError = true;
+        }
+
+        if(passwObj.password !== passwObj.cPassword) {
+            passwordError = true;
+            cPasswordError = true;
+        }
+
+        setErrors({...errors, password:passwordError, cPassword:cPasswordError});
     }
 
     return (
@@ -112,7 +159,14 @@ export default function Register() {
                                     id="email"
                                     label="Email Address"
                                     name="email"
+                                    helperText={errorsLayout.email}
                                     autoComplete="email"
+                                    error={errors.email}
+                                    value={userObj.email}
+                                    onChange={(e) => {
+                                        setUserObj({...userObj, email: e.target.value});
+                                        validateEmail(e.target.value)
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -122,19 +176,50 @@ export default function Register() {
                                     name="password"
                                     label="Password"
                                     type="password"
+                                    helperText={errorsLayout.password}
                                     id="password"
                                     autoComplete="new-password"
+                                    error={errors.password}
+                                    value={userObj.password}
+                                    onChange={(e) => {
+                                        setUserObj({...userObj, password: e.target.value});
+                                        validatePassword({cPassword: userObj.cPassword, password: e.target.value})
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="cPassword"
+                                    label="RepeatPassword"
+                                    type="password"
+                                    helperText={errorsLayout.cPassword}
+                                    id="cPassword"
+                                    autoComplete="new-password"
+                                    error={errors.cPassword}
+                                    value={userObj.cPassword}
+                                    onChange={(e) => {
+                                        setUserObj({...userObj, cPassword: e.target.value});
+                                        validatePassword({password: userObj.password, cPassword: e.target.value})
+                                    }}
                                 />
                             </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Sign Up
-                        </Button>
+                        {!loading ?
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{mt: 3, mb: 2}}
+                            >
+                                Sign Up
+                            </Button>
+                            :
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <CircularProgress />
+                            </Box>
+                        }
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link to="/login" variant="body2">
@@ -142,6 +227,7 @@ export default function Register() {
                                 </Link>
                             </Grid>
                         </Grid>
+                        {registerError && <Alert severity="error">{registerError}</Alert>}
                     </Box>
                 </Box>
             </Container>

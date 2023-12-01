@@ -4,7 +4,7 @@ export function getUser() {
     if (localStorage) {
         return JSON.parse(localStorage.getItem('user'));
     } else {
-        const result = storage[user];
+        const result = storage['user'];
         return result === undefined ? null : result; // imitation of the storage behaviour
     }
 }

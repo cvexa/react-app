@@ -3,6 +3,7 @@ import SideBar from "../SideBar/SideBar.jsx";
 import Toolbar from "@mui/material/Toolbar";
 import * as React from "react";
 import drawerWidth from "../SideBar/SideBar.jsx";
+import {DialogProvider} from "../../../contexts/Dialog.jsx";
 
 export default function AdminLayout(props) {
     return (
@@ -14,7 +15,9 @@ export default function AdminLayout(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                {props.children}
+                <DialogProvider>
+                    {props.children}
+                </DialogProvider>
             </Box>
         </Box>
     );

@@ -9,7 +9,7 @@ import {usersTableSkeleton} from "../../../utils/users.js";
 export default function Users() {
     const { user, setUser } = useUserContext();
     const [users, setUsers] = useState([]);
-    const perPage = 1;
+    const perPage = 5;
     const [pagination, setPagination] = useState({
         page:0,
         count:0,

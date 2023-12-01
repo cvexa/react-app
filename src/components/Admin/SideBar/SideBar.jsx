@@ -22,7 +22,9 @@ import PeopleIcon from '@mui/icons-material/People';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import {createTheme} from "@mui/material";
 import {logOut} from "../../../services/user.jsx";
+import {setUser} from "../../../utils/user.js";
 
 export const drawerWidth = 240;
 
@@ -30,8 +32,8 @@ export default function SideBar(props) {
     const { user, setUser } = useUserContext();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const nvaigate = useNavigate();
     const [menuItems, setMenuItems] = useState({});
+    const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -90,9 +92,8 @@ export default function SideBar(props) {
         logOut().finally( () => {
             localStorage.clear();
             setUser({});
-            nvaigate('/');
+            navigate('/');
         });
-
     }
 
     const drawer = (

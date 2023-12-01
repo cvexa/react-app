@@ -1,12 +1,20 @@
-import {Alert, Card, CardActions, CardContent} from "@mui/material";
+import {
+    Alert,
+    Card,
+    CardActions, CardContent,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import React, {useEffect, useState} from "react";
-import {getUserById, updateUserById} from "../../services/user.jsx";
-import {useParams} from "react-router-dom";
+import {deleteUserById, getUserById, logOut, updateUserById} from "../../services/user.jsx";
 import {useUserContext} from "../../contexts/User.jsx";
 import TextField from "@mui/material/TextField";
 import {isEmailValid} from "../../utils/validations.js";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Box from "@mui/material/Box";
+import {useNavigate} from "react-router-dom";
+import CustomDialog from "../Admin/Dialog/CustomDialog.jsx";
+import {useDialogContext} from "../../contexts/Dialog.jsx";
 
 export default function Profile() {
     const usrObjLayout = {
@@ -27,6 +35,10 @@ export default function Profile() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [registerError, setRegisterError] = useState(false);
+    const navigate = useNavigate();
+    const { openDialog, setOpenDialog } = useDialogContext();
+    const { agree, setAgree } = useDialogContext();
+
 
     const fetchUser = () => {
         try {
@@ -63,6 +75,29 @@ export default function Profile() {
     const handleBackClick = () => {
         setEditMode(false);
     }
+
+    const handleDeleteBtn = () => {
+        setOpenDialog(true);
+    }
+
+    const handleDeleteUser = () => {
+        try {
+            deleteUserById(userById.id).then( () => {
+                localStorage.clear();
+                setUser({});
+                navigate('/');
+            });
+        }catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect( () => {
+        if(agree) {
+            setAgree(false);
+            handleDeleteUser();
+        }
+    }, [agree])
 
     const validateName = (nameObj) => {
         let fNameError = false;
@@ -185,6 +220,12 @@ export default function Profile() {
                         }
                     </CardActions>
             </Card>
+            <Box component="section" sx={{ p: 2, border: '1px dashed grey', minWidth: 275, maxWidth: 400, marginTop: '2%', textAlign: 'center' }}>
+                <Button variant="outlined" size="small"  color="error" startIcon={<DeleteIcon />} onClick={handleDeleteBtn}>
+                    Delete
+                </Button>
+            </Box>
+            <CustomDialog title={'Are you sure?'} text={'Are you sure that you want to delete your profile? If you agree your account will be permanently deleted!'}/>
         </>
     );
 }

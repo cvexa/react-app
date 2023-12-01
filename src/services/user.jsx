@@ -68,3 +68,16 @@ export async function updateUserById(id, data) {
         return data;
     });
 }
+
+export async function deleteUserById(id) {
+    let userToken = getUser().token;
+    requestOptions.method = 'DELETE';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+
+    return await fetch(`${baseUrl}users/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
+}

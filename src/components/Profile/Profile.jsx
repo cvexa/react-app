@@ -1,7 +1,7 @@
 import {
     Alert,
     Card,
-    CardActions, CardContent,
+    CardActions, CardContent, CircularProgress,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -37,7 +37,12 @@ export default function Profile() {
     const [registerError, setRegisterError] = useState(false);
     const navigate = useNavigate();
     const { openDialog, setOpenDialog } = useDialogContext();
-    const { agree, setAgree } = useDialogContext();
+    const { dialogAction, setDialogAction } = useDialogContext();
+    const [dialogContent, setDialogContent] = useState({
+        title: '',
+        content: '',
+        actionBtnText: ''
+    })
 
 
     const fetchUser = () => {
@@ -77,6 +82,11 @@ export default function Profile() {
     }
 
     const handleDeleteBtn = () => {
+        setDialogContent({
+            title: 'Are you sure?',
+            content: 'Are you sure that you want to delete your profile? If you agree your account will be permanently deleted!',
+            actionBtnText: 'Agree'
+        })
         setOpenDialog(true);
     }
 
@@ -93,11 +103,11 @@ export default function Profile() {
     }
 
     useEffect( () => {
-        if(agree) {
-            setAgree(false);
+        if(dialogAction) {
+            setDialogAction(false);
             handleDeleteUser();
         }
-    }, [agree])
+    }, [dialogAction])
 
     const validateName = (nameObj) => {
         let fNameError = false;
@@ -142,8 +152,10 @@ export default function Profile() {
                                 </CardContent>
                             </>
                     ) :
-                        ''
-                       }
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress />
+                        </Box>
+                    }
                 {userById && editMode ?
                     <>
                         <CardContent>
@@ -225,7 +237,7 @@ export default function Profile() {
                     Delete
                 </Button>
             </Box>
-            <CustomDialog title={'Are you sure?'} text={'Are you sure that you want to delete your profile? If you agree your account will be permanently deleted!'}/>
+            {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText}/>}
         </>
     );
 }

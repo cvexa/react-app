@@ -6,6 +6,6 @@ export const propertiesTableSkeleton = [
     {field: 'price', headerName: 'Price'},
     {field: 'location', headerName: 'Location'},
     {field: 'floor_number', headerName: 'Floor Number'},
-    {field: 'number_of_rooms', headerName:  'Number of Rooms'},
+    {field: 'published', headerName:  'Is Published'},
     {field: null, headerName: 'Actions'}
 ]

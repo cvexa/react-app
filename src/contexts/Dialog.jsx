@@ -7,10 +7,10 @@ export const useDialogContext = () => useContext(DialogContext);
 
 export function DialogProvider({ children }) {
     const [openDialog, setOpenDialog] = useState(false);
-    const [agree, setAgree] = useState(false);
+    const [dialogAction, setDialogAction] = useState(false);
 
     return (
-        <DialogContext.Provider value={{openDialog, setOpenDialog, agree, setAgree}}>
+        <DialogContext.Provider value={{openDialog, setOpenDialog, dialogAction, setDialogAction}}>
             {children}
         </DialogContext.Provider>
     );

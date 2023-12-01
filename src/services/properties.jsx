@@ -1,4 +1,5 @@
 import {baseUrl, requestOptions} from "../utils/requestHelper.js";
+import {getUser} from "../utils/user.js";
 
 export async function GetTop(limit) {
     requestOptions.method = 'GET';
@@ -54,4 +55,17 @@ export async function getPaginatedPropertiesByType(perPage, page, type) {
     return await fetch(`${baseUrl}properties-by-type?per_page=${perPage ?? 10}&page=${page}&type=${type}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
         return data;
     })
+}
+
+export async function deleteProperty(id) {
+    let userToken = getUser().token;
+    requestOptions.method = 'DELETE';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+
+    return await fetch(`${baseUrl}properties/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
 }

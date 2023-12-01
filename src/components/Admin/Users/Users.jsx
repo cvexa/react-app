@@ -13,6 +13,7 @@ export default function Users() {
     const [pagination, setPagination] = useState({
         page:0,
         count:0,
+        total:0,
     });
     const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ export default function Users() {
                 setPagination({
                     page: res.current_page,
                     count: res.last_page,
+                    total: res.total
                 })
             });
         }catch (e) {
@@ -35,7 +37,8 @@ export default function Users() {
             setUsers(res.data);
             setPagination({
                 page: res.current_page,
-                count: res.last_page
+                count: res.last_page,
+                total: pagination.total
             })
         });
     };
@@ -54,7 +57,7 @@ export default function Users() {
 
     return (
         <>
-            <h2 style={{marginBottom:"2%"}}>Users</h2>
+            <h2 style={{marginBottom:"2%"}}>Users total : ( {users && pagination.total} )</h2>
             <div style={{marginBottom:"2%"}}>
                 <Button variant="outlined" size="small">
                     Create

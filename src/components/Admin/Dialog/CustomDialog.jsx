@@ -7,17 +7,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CustomDialog({title, text})
+export default function CustomDialog({title, content, actionBtnText})
 {
     const { openDialog, setOpenDialog } = useDialogContext();
-    const { agree, setAgree } = useDialogContext();
+    const { dialogAction, setDialogAction } = useDialogContext();
 
     const handleClose = () => {
         setOpenDialog(false);
     };
 
     const handleAgree = () => {
-        setAgree(true);
+        setDialogAction(true);
         setOpenDialog(false);
     }
 
@@ -33,12 +33,12 @@ export default function CustomDialog({title, text})
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        {text}
+                        {content}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleAgree}>Agree</Button>
+                    <Button variant="outlined" onClick={handleClose}>Close</Button>
+                    {actionBtnText && <Button variant="contained" color="success" onClick={handleAgree}>{actionBtnText}</Button>}
                 </DialogActions>
             </Dialog>
         </>

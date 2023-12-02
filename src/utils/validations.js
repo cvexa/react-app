@@ -13,3 +13,29 @@ export function isPasswordValid(password)
     }
     return true;
 }
+
+export function validateString(data, rules)
+{
+    if(!data){
+        return false;
+    }
+
+    if(data.length < rules.min){
+        return false;
+    }
+
+    if(data.length > rules.max){
+        return false;
+    }
+
+    return true;
+}
+
+export function validatePrice(data)
+{
+    //100 000 000 - max
+    if(!new RegExp('^(\\d|[1-9]\\d{1,7})(\\.\\d{2})?$').test(data)) {
+        return false;
+    }
+    return true;
+}

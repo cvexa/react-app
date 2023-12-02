@@ -13,7 +13,7 @@ import {isEmailValid} from "../../utils/validations.js";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
-import CustomDialog from "../Admin/Dialog/CustomDialog.jsx";
+import CustomDialog from "../Admin/CustomDialog/CustomDialog.jsx";
 import {useDialogContext} from "../../contexts/Dialog.jsx";
 
 export default function Profile() {

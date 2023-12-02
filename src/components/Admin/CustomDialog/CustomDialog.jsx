@@ -7,7 +7,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CustomDialog({title, content, actionBtnText})
+export default function CustomDialog({title, content, actionBtnText, isFullScreen})
 {
     const { openDialog, setOpenDialog } = useDialogContext();
     const { dialogAction, setDialogAction } = useDialogContext();
@@ -29,6 +29,7 @@ export default function CustomDialog({title, content, actionBtnText})
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
+                fullScreen={isFullScreen}
             >
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>

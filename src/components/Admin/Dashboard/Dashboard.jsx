@@ -7,9 +7,10 @@ import PaginatedTable from "../PaginatedTable/PaginatedTable.jsx";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
-import CustomDialog from "../Dialog/CustomDialog.jsx";
+import CustomDialog from "../CustomDialog/CustomDialog.jsx";
 import ViewProperty from "../ViewProperty/ViewProperty.jsx";
 import {Alert, Snackbar} from "@mui/material";
+import PropertyForm from "../PropertyForm/PropertyForm.jsx";
 
 
 export default function Dashboard() {
@@ -27,7 +28,8 @@ export default function Dashboard() {
     const [dialogContent, setDialogContent] = useState({
         title: '',
         content: '',
-        actionBtnText: ''
+        actionBtnText: '',
+        isFullScreen: false
     });
     const [deleteId, setDeleteId] = useState();
     const [message, setMessage] = useState(false);
@@ -73,6 +75,15 @@ export default function Dashboard() {
         setOpenDialog(true);
     }
 
+    const onCreateClickHandler = () => {
+        setDialogContent({
+            title: 'Create Property',
+            content: <PropertyForm />,
+            isFullScreen: true
+        });
+        setOpenDialog(true);
+    }
+
     const onEditClickHandler = (id) => {
         console.log(id);
     }
@@ -109,7 +120,7 @@ export default function Dashboard() {
         <>
             <div style={{marginBottom:"2%"}}>
                 <h2 style={{marginBottom:"2%"}}>Properties total : ( {properties && pagination.total} )</h2>
-                <Button variant="outlined" size="small">
+                <Button variant="outlined" size="small" onClick={onCreateClickHandler}>
                     Create
                 </Button>
             </div>
@@ -123,7 +134,7 @@ export default function Dashboard() {
                         }}/>
                     </>
                 }
-                {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText}/>}
+                {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText} isFullScreen={dialogContent.isFullScreen}/>}
                 {message &&
                     <Snackbar
                         open={message}

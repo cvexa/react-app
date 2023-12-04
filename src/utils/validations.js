@@ -39,3 +39,19 @@ export function validatePrice(data)
     }
     return true;
 }
+
+export function validateNum(data, rules)
+{
+    if(isNaN(data)) {
+        return false;
+    }
+
+    if(data < rules.min){
+        return false;
+    }
+
+    if(data > rules.max){
+        return false;
+    }
+    return true;
+}

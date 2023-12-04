@@ -8,4 +8,30 @@ export const propertiesTableSkeleton = [
     {field: 'floor_number', headerName: 'Floor Number'},
     {field: 'published', headerName:  'Is Published'},
     {field: null, headerName: 'Actions'}
-]
+];
+
+export const propertyFields = [
+    'id',
+    'title',
+    'description',
+    'pic',
+    'price',
+    'location',
+    'floor_number',
+    'number_of_rooms',
+    'with_parking',
+    'type',
+    'contract',
+    'payment_process',
+    'safety',
+    'quadrature',
+    'description',
+    'is_top',
+    'is_featured',
+    'is_best_deal',
+    'created_by',
+    'published',
+    'created_at',
+    'updated_at'
+
+];

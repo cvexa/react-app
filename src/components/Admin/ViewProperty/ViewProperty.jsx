@@ -40,9 +40,11 @@ export default function ViewProperty({id}) {
                         </Box>
                     }
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {property.title}
-                        </Typography>
+                        <div>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {property.title}
+                            </Typography>
+                        </div>
                         <Typography variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>

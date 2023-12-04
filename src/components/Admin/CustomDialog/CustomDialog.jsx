@@ -33,7 +33,7 @@ export default function CustomDialog({title, content, actionBtnText, isFullScree
             >
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
+                    <DialogContentText id="alert-dialog-slide-description" component={'span'}>
                         {content}
                     </DialogContentText>
                 </DialogContent>

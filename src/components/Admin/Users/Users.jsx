@@ -3,8 +3,12 @@ import {useUserContext} from "../../../contexts/User.jsx";
 import {useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import PaginatedTable from "../PaginatedTable/PaginatedTable.jsx";
-import {getPaginatedUsers} from "../../../services/user.jsx";
+import {deleteUserById, getPaginatedUsers} from "../../../services/user.jsx";
 import {usersTableSkeleton} from "../../../utils/users.js";
+import Profile from "../../Profile/Profile";
+import ViewProperty from "../ViewProperty/ViewProperty.jsx";
+import {useDialogContext} from "../../../contexts/Dialog.jsx";
+import {useAlertContext} from "../../../contexts/Alert.jsx";
 
 export default function Users() {
     const { user, setUser } = useUserContext();
@@ -16,6 +20,12 @@ export default function Users() {
         total:0,
     });
     const navigate = useNavigate();
+    const { openDialog, setOpenDialog } = useDialogContext();
+    const { dialogAction, setDialogAction } = useDialogContext();
+    const { dialogContent, setDialogContent } = useDialogContext();
+    const [deleteId, setDeleteId] = useState();
+    const {trigger, setTrigger} = useAlertContext();
+    const {msg, setMsg} = useAlertContext();
 
     useEffect(() => {
         try {
@@ -43,17 +53,58 @@ export default function Users() {
         });
     };
 
-    const onViewClickHandler = (id) => {
-        console.log(id);
-    }
-
-    const onEditClickHandler = (id) => {
-        console.log(id);
+    const onSettingsClickHandler = (id) => {
+        setDialogContent({
+            title: 'Manage User',
+            content: <Profile userId={id} usersList={users} syncUsers={setUsers} syncPagination={setPagination} pagination={pagination}/>,
+            actionBtnText: ''
+        })
+        setOpenDialog(true);
     }
 
     const onDeleteClickHandler = (id) => {
-        console.log(id);
+        setDeleteId(id);
+        setDialogContent({
+            title: 'Are you sure?',
+            content: 'Are you sure that you want to delete your profile? If you agree your account will be permanently deleted!',
+            actionBtnText: 'Agree'
+        })
+        setOpenDialog(true);
     }
+
+    const handleDeleteUser = () => {
+        try {
+            deleteUserById(deleteId).then(() => {
+                if(deleteId === user.id) {
+                    localStorage.clear();
+                    setUser({});
+                    navigate('/');
+                }else{
+                    users.map((data, position) => {//refresh properties list without the deleted one
+                        Object.keys(users[position]).map((key) => {
+                            if (users[position] && users[position].id === deleteId) {
+                                delete users[position];
+                            }
+                        })
+                        setUsers(users);
+                        setPagination({...pagination, total: pagination.total - 1})
+                    })
+                }
+                setTrigger(true);
+                setMsg('Successfully deleted user!');
+            });
+        }catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect( () => {
+        if(dialogAction) {
+            setDialogAction(false);
+            handleDeleteUser();
+        }
+    }, [dialogAction])
+
 
     return (
         <>
@@ -67,9 +118,8 @@ export default function Users() {
                 {users &&
                     <>
                         <PaginatedTable rowsData={users} pagination={pagination} tableDataSkeleton={usersTableSkeleton} handlePageChange={handleChangePage} actions={{
-                            onViewClickHandler : onViewClickHandler,
-                            onEditClickHandler : onEditClickHandler,
-                            onDeleteClickHandler : onDeleteClickHandler
+                            settings: onSettingsClickHandler,
+                            onDeleteClickHandler: onDeleteClickHandler
                         }}/>
                     </>
                 }

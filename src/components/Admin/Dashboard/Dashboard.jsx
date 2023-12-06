@@ -138,7 +138,7 @@ export default function Dashboard() {
                         }}/>
                     </>
                 }
-                {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText} isFullScreen={dialogContent.isFullScreen}/>}
+
             </div>
         </>
     );

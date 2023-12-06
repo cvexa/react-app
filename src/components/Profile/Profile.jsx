@@ -16,7 +16,7 @@ import {useNavigate} from "react-router-dom";
 import CustomDialog from "../Admin/CustomDialog/CustomDialog.jsx";
 import {useDialogContext} from "../../contexts/Dialog.jsx";
 
-export default function Profile() {
+export default function Profile({userId, usersList, syncUsers, pagination, syncPagination}) {
     const usrObjLayout = {
         firstName:'',
         lastName:'',
@@ -43,7 +43,7 @@ export default function Profile() {
 
     const fetchUser = () => {
         try {
-            getUserById(user.id).then((res) => {
+            getUserById(userId ? userId : user.id).then((res) => {
                 setUserById(res);
                 let name = res.name.split(/(?<=^\S+)\s/);
                 setUserObj({firstName:name[0], lastName:name[1],email: res.email});
@@ -53,6 +53,12 @@ export default function Profile() {
             console.log(e);
         }
     }
+
+    useEffect( () => {
+        if(userId) {
+            fetchUser();
+        }
+    }, [userId])
 
     useEffect(() => {
         fetchUser();
@@ -64,17 +70,37 @@ export default function Profile() {
 
     const handleUpdateClick = () => {
         let name = userObj.firstName + ' ' + userObj.lastName;
-        updateUserById(userById.id, {email:userObj.email, name: name}).then((res) => {
-            setUserById(res.data);
-            let name = res.data.name.split(/(?<=^\S+)\s/);
-            setUserObj({firstName:name[0], lastName:name[1],email: res.data.email});
-            setLoading(false);
-            setEditMode(false);
-        });
+        try {
+            updateUserById(userById.id, {email: userObj.email, name: name}).then((res) => {
+                if(res.status) {
+                    setUserById(res.data);
+                    let name = res.data.name.split(/(?<=^\S+)\s/);
+                    setUserObj({firstName: name[0], lastName: name[1], email: res.data.email});
+                    setLoading(false);
+                    setEditMode(false);
+                    if (userId) {
+                        usersList.map((data, position) => {//refresh properties list without the deleted one
+                            Object.keys(usersList[position]).map((key) => {
+                                if (usersList[position] && usersList[position].id === userId) {
+                                    usersList[position] = res.data;
+                                }
+                            })
+                            syncUsers(usersList);
+                        })
+                    }
+                    setRegisterError(undefined);
+                }else{
+                    setRegisterError(res.error ?? res);
+                }
+            });
+        }catch (e) {
+            console.log(e);
+        }
     }
 
     const handleBackClick = () => {
         setEditMode(false);
+        setRegisterError(undefined);
     }
 
     const handleDeleteBtn = () => {
@@ -88,7 +114,7 @@ export default function Profile() {
 
     const handleDeleteUser = () => {
         try {
-            deleteUserById(userById.id).then( () => {
+            deleteUserById(userById.id).then(() => {
                 localStorage.clear();
                 setUser({});
                 navigate('/');
@@ -225,12 +251,21 @@ export default function Profile() {
                         }
                     </CardActions>
             </Card>
-            <Box component="section" sx={{ p: 2, border: '1px dashed grey', minWidth: 275, maxWidth: 400, marginTop: '2%', textAlign: 'center' }}>
-                <Button variant="outlined" size="small"  color="error" startIcon={<DeleteIcon />} onClick={handleDeleteBtn}>
-                    Delete
-                </Button>
-            </Box>
-            {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText}/>}
+            {!userId &&
+                <Box component="section" sx={{
+                    p: 2,
+                    border: '1px dashed grey',
+                    minWidth: 275,
+                    maxWidth: 400,
+                    marginTop: '2%',
+                    textAlign: 'center'
+                }}>
+                    <Button variant="outlined" size="small" color="error" startIcon={<DeleteIcon/>}
+                            onClick={handleDeleteBtn}>
+                        Delete
+                    </Button>
+                </Box>
+            }
         </div>
     );
 }

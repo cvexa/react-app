@@ -1,12 +1,25 @@
 import Button from "@mui/material/Button";
-import {useEffect} from "react";
+import SettingsIcon from '@mui/icons-material/Settings';
 
-export default function TableActions({onViewClickHandler, onEditClickHandler, onDeleteClickHandler, dataId }) {
+export default function TableActions({onViewClickHandler, onEditClickHandler, onDeleteClickHandler, settings, dataId }) {
     return (
         <>
-            <Button variant="contained" size="small" color={"success"} sx={{marginRight:'2%', marginBottom: '1%'}} onClick={() => onViewClickHandler(dataId)}>View</Button>
-            <Button variant="contained" size="small" sx={{marginRight:'2%', marginBottom: '1%'}} onClick={() => onEditClickHandler(dataId)}>Edit</Button>
-            <Button variant="contained" size="small" color={"error"} sx={{marginRight:'2%', marginBottom: '1%'}} onClick={() => onDeleteClickHandler(dataId)}>Delete</Button>
+            {onViewClickHandler &&
+                <Button variant="contained" size="small" color={"success"} sx={{marginRight: '2%', marginBottom: '1%'}}
+                        onClick={() => onViewClickHandler(dataId)}>View</Button>
+            }
+            {onEditClickHandler &&
+                <Button variant="contained" size="small" sx={{marginRight: '2%', marginBottom: '1%'}}
+                        onClick={() => onEditClickHandler(dataId)}>Edit</Button>
+            }
+            {onDeleteClickHandler &&
+                <Button variant="contained" size="small" color={"error"} sx={{marginRight: '2%', marginBottom: '1%'}}
+                        onClick={() => onDeleteClickHandler(dataId)}>Delete</Button>
+            }
+            {settings &&
+                <Button variant="contained" size="small" color={"success"} sx={{marginRight: '2%', marginBottom: '1%'}}
+                    onClick={() => settings(dataId)}><SettingsIcon /></Button>
+            }
         </>
     );
 }

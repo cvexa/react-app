@@ -69,3 +69,18 @@ export async function deleteProperty(id) {
         return data;
     });
 }
+
+export async function createProperty(data) {
+    let userToken = getUser().token;
+    requestOptions.method = 'POST';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    requestOptions.body = JSON.stringify({...data});
+    console.log(requestOptions);
+    return await fetch(`${baseUrl}properties`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: requestOptions.body,
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
+}

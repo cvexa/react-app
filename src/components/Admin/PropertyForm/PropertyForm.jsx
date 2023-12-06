@@ -4,11 +4,18 @@ import TextField from "@mui/material/TextField";
 import React, {useState, useEffect} from "react";
 import {validateNum, validatePrice, validateString} from "../../../utils/validations.js";
 import Button from "@mui/material/Button";
-import {Input, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, ToggleButton} from "@mui/material";
+import {
+    Alert,
+    MenuItem,
+    Select,
+    ToggleButton
+} from "@mui/material";
 import {propertyFields} from "../../../utils/properties.js";
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from "@mui/material/Typography";
-import {GetPropertyTypes} from "../../../services/properties.jsx";
+import {createProperty, GetPropertyTypes} from "../../../services/properties.jsx";
+import {useDialogContext} from "../../../contexts/Dialog.jsx";
+import {useAlertContext} from "../../../contexts/Alert.jsx";
 
 export default function PropertyForm({propId})
 {
@@ -37,6 +44,12 @@ export default function PropertyForm({propId})
         title:false,
     });
     const [propertyTypes, setPropertyTypes] = useState({});
+    const [isFormReady, setIsFormReady] = useState(false);
+    const [submitError, setSubmitError] = useState();
+    const { openDialog, setOpenDialog } = useDialogContext();
+    const [message, setMessage] = useState(false);
+    const {trigger, setTrigger} = useAlertContext();
+    const {msg, setMsg} = useAlertContext();
 
     useEffect( () => {
         if(propId) {
@@ -44,14 +57,41 @@ export default function PropertyForm({propId})
         }
     },[propId]);
 
+    useEffect( () => {
+        if(Object.keys(errors).length !== Object.keys(errorsLayout).length) {
+            setIsFormReady(false);
+        }else {
+            if (Object.values(errors).filter(item => item === true).length) {
+                setIsFormReady(false);
+            } else {
+                setIsFormReady(true);
+            }
+        }
+    }, [errors]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if(propId) {
             console.log('edit');
             return true;
         }
-        console.log('create');
-        console.log(propertyObj);
+
+        if(isFormReady) {
+            try {
+                createProperty(propertyObj).then((res) => {
+                    if(res.success) {
+                        setPropertyObj(mapPropertyFields);
+                        setOpenDialog(false);
+                        setTrigger(true);
+                        setMsg('Successfully created property!');
+                    }else{
+                        setSubmitError('something went wrong'+res);
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
+        }
         return true;
     }
 
@@ -121,7 +161,6 @@ export default function PropertyForm({propId})
                         label="Picture"
                         error={errors.pic}
                         helperText={errorsLayout.pic}
-                        autoFocus
                         value={propertyObj.pic}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, pic: e.target.value});
@@ -142,7 +181,6 @@ export default function PropertyForm({propId})
                         label="Price"
                         error={errors.price}
                         helperText={errorsLayout.price}
-                        autoFocus
                         value={propertyObj.price}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, price: e.target.value});
@@ -163,7 +201,6 @@ export default function PropertyForm({propId})
                         label="Location"
                         error={errors.location}
                         helperText={errorsLayout.location}
-                        autoFocus
                         value={propertyObj.location}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, location: e.target.value});
@@ -184,7 +221,6 @@ export default function PropertyForm({propId})
                         label="Floor Number"
                         error={errors.floor_number}
                         helperText={errorsLayout.floor_number}
-                        autoFocus
                         value={propertyObj.floor_number}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, floor_number: e.target.value});
@@ -205,7 +241,6 @@ export default function PropertyForm({propId})
                         label="Number of rooms"
                         error={errors.number_of_rooms}
                         helperText={errorsLayout.number_of_rooms}
-                        autoFocus
                         value={propertyObj.number_of_rooms}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, number_of_rooms: e.target.value});
@@ -320,7 +355,6 @@ export default function PropertyForm({propId})
                         label="Contract"
                         error={errors.contract}
                         helperText={errorsLayout.contract}
-                        autoFocus
                         value={propertyObj.contract}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, contract: e.target.value});
@@ -341,7 +375,6 @@ export default function PropertyForm({propId})
                         label="Payment process"
                         error={errors.payment_process}
                         helperText={errorsLayout.payment_process}
-                        autoFocus
                         value={propertyObj.payment_process}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, payment_process: e.target.value});
@@ -362,7 +395,6 @@ export default function PropertyForm({propId})
                         label="Safety"
                         error={errors.safety}
                         helperText={errorsLayout.safety}
-                        autoFocus
                         value={propertyObj.safety}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, safety: e.target.value});
@@ -383,7 +415,6 @@ export default function PropertyForm({propId})
                         label="Quadrature"
                         error={errors.quadrature}
                         helperText={errorsLayout.quadrature}
-                        autoFocus
                         value={propertyObj.quadrature}
                         onChange={(e) => {
                             setPropertyObj({...propertyObj, quadrature: e.target.value});
@@ -396,6 +427,7 @@ export default function PropertyForm({propId})
                 </Grid>
             </Grid>
             <div style={{textAlign:'center'}}>
+                {submitError && <Alert severity="error">{submitError}</Alert>}
                 <Button
                     type="submit"
                     variant="contained"

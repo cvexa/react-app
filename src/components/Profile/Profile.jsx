@@ -38,11 +38,7 @@ export default function Profile() {
     const navigate = useNavigate();
     const { openDialog, setOpenDialog } = useDialogContext();
     const { dialogAction, setDialogAction } = useDialogContext();
-    const [dialogContent, setDialogContent] = useState({
-        title: '',
-        content: '',
-        actionBtnText: ''
-    })
+    const { dialogContent, setDialogContent } = useDialogContext();
 
 
     const fetchUser = () => {
@@ -132,34 +128,30 @@ export default function Profile() {
     }
 
     return (
-        <>
+        <div>
             <Card sx={{minWidth: 275, maxWidth: 400}}>
-                    {userById && !editMode ? (
-                            <>
+                    {!editMode && (
+                            <div>
                                 <CardContent>
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                        Email : {userById.email}
-                                    </Typography>
-                                    <Typography sx={{fontSize: 14}}  color="text.secondary" gutterBottom>
-                                        Name : {userById.name}
+                                        Email : {userById?.email}
                                     </Typography>
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                        Created at : {new Date(userById.created_at).toLocaleDateString()}
+                                        Name : {userById?.name}
                                     </Typography>
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                        Updated at : {new Date(userById.updated_at).toLocaleDateString()}
+                                        Created at : {new Date(userById?.created_at).toLocaleDateString()}
+                                    </Typography>
+                                    <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                                        Updated at : {new Date(userById?.updated_at).toLocaleDateString()}
                                     </Typography>
                                 </CardContent>
-                            </>
-                    ) :
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <CircularProgress />
-                        </Box>
-                    }
-                {userById && editMode ?
-                    <>
+                            </div>
+                    )}
+                {editMode ?
+                    <div>
                         <CardContent>
-                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom component={'span'}>
                                 <TextField
                                     required
                                     autoFocus
@@ -178,7 +170,7 @@ export default function Profile() {
                                     }}
                                 />
                             </Typography>
-                            <Typography sx={{fontSize: 14}}  color="text.secondary" gutterBottom>
+                            <Typography sx={{fontSize: 14}}  color="text.secondary" gutterBottom component={'span'}>
                                 <TextField
                                     autoComplete="given-name"
                                     name="firstName"
@@ -212,14 +204,15 @@ export default function Profile() {
                                     }}
                                 />
                             </Typography>
-                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                Created at : {new Date(userById.created_at).toLocaleDateString()}
+                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom component={'span'}>
+                                Created at : {new Date(userById?.created_at).toLocaleDateString()}
                             </Typography>
-                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                Updated at : {new Date(userById.updated_at).toLocaleDateString()}
+                            <br/>
+                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom component={'span'}>
+                                Updated at : {new Date(userById?.updated_at).toLocaleDateString()}
                             </Typography>
                         </CardContent>
-                    </>
+                    </div>
                     : ''
                 }
                     {registerError && <Alert severity="error">{registerError}</Alert>}
@@ -238,6 +231,6 @@ export default function Profile() {
                 </Button>
             </Box>
             {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText}/>}
-        </>
+        </div>
     );
 }

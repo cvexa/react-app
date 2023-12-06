@@ -11,6 +11,7 @@ import CustomDialog from "../CustomDialog/CustomDialog.jsx";
 import ViewProperty from "../ViewProperty/ViewProperty.jsx";
 import {Alert, Snackbar} from "@mui/material";
 import PropertyForm from "../PropertyForm/PropertyForm.jsx";
+import {useAlertContext} from "../../../contexts/Alert.jsx";
 
 
 export default function Dashboard() {
@@ -25,14 +26,12 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const { openDialog, setOpenDialog } = useDialogContext();
     const { dialogAction, setDialogAction } = useDialogContext();
-    const [dialogContent, setDialogContent] = useState({
-        title: '',
-        content: '',
-        actionBtnText: '',
-        isFullScreen: false
-    });
+    const { dialogContent, setDialogContent } = useDialogContext();
     const [deleteId, setDeleteId] = useState();
-    const [message, setMessage] = useState(false);
+    const {trigger, setTrigger} = useAlertContext();
+    const {msg, setMsg} = useAlertContext();
+    //const [severity, setSeverity] = useAlertContext();
+    //const [message, setMessage] = useState(false);
 
     if(user.role == 'user') {
         return (<>
@@ -98,19 +97,21 @@ export default function Dashboard() {
         setOpenDialog(true);
     }
 
-    const handleCloseMessage = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setMessage(false);
-    };
+    // const handleCloseMessage = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //
+    //     setMessage(false);
+    // };
 
     useEffect( () => {
         if(dialogAction) {
             setDialogAction(false);
             deleteProperty(deleteId).then( () => {
-                setMessage(true);
+                //setMessage(true);
+                setTrigger(true);
+                setMsg('Successfully deleted property!')
             })
         }
     }, [dialogAction])
@@ -135,16 +136,6 @@ export default function Dashboard() {
                     </>
                 }
                 {dialogContent && <CustomDialog title={dialogContent.title} content={dialogContent.content} actionBtnText={dialogContent.actionBtnText} isFullScreen={dialogContent.isFullScreen}/>}
-                {message &&
-                    <Snackbar
-                        open={message}
-                        onClose={handleCloseMessage}
-                        autoHideDuration={4000}>
-                        <Alert onClose={handleCloseMessage} severity="success" sx={{ width: '100%' }}>
-                            Successfully deleted property !
-                        </Alert>
-                    </Snackbar>
-                }
             </div>
         </>
     );

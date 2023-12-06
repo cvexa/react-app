@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import * as React from "react";
 import drawerWidth from "../SideBar/SideBar.jsx";
 import {DialogProvider} from "../../../contexts/Dialog.jsx";
+import {AlertProvider} from "../../../contexts/Alert";
 
 export default function AdminLayout(props) {
     return (
@@ -16,7 +17,9 @@ export default function AdminLayout(props) {
             >
                 <Toolbar />
                 <DialogProvider>
-                    {props.children}
+                    <AlertProvider>
+                        {props.children}
+                    </AlertProvider>
                 </DialogProvider>
             </Box>
         </Box>

@@ -94,10 +94,18 @@ export default function PropertyForm({propId, properties, syncProperties})
             if(isFormReady) {
                 updateProperty(propId, propertyObj).then( (res) => {
                     if(res.success) {
-                        setPropertyObj(res.property);
+                        setPropertyObj(mapPropertyFields);
                         setOpenDialog(false);
                         setTrigger(true);
                         setMsg('Successfully edited property!');
+                        properties.map( (data, position) => {
+                            Object.keys(properties[position]).map( (key) => {
+                                if(properties[position].id === res.property.id) {
+                                    properties[position] = {...res.property};
+                                }
+                            })
+                        })
+                        syncProperties(properties);
                     }else{
                         setSubmitError('something went wrong'+res);
                     }

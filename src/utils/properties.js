@@ -35,3 +35,23 @@ export const propertyFields = [
     'updated_at'
 
 ];
+
+export function parseNullPropertyFieldsFromBe(property) {
+    Object.keys(property).forEach(key => {
+        if (property[key] === null) {
+            delete property[key];
+        }
+    });
+
+    return property;
+}
+
+export function parseIntValuesFromPropertyFieldsFromBe(property) {
+    property.is_best_deal = property.is_best_deal !== 0;
+    property.is_featured = property.is_featured !== 0;
+    property.is_top = property.is_top !== 0;
+    property.published = property.published !== 0;
+    property.with_parking = property.with_parking !== 0;
+
+    return property;
+}

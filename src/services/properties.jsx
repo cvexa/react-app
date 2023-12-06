@@ -84,3 +84,18 @@ export async function createProperty(data) {
         return data;
     });
 }
+
+export async function updateProperty(id,data) {
+    let userToken = getUser().token;
+    requestOptions.method = 'PUT';
+    requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    requestOptions.body = JSON.stringify({...data});
+
+    return await fetch(`${baseUrl}properties/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: requestOptions.body,
+    }).then(response => response.json()).then((data) => {
+        return data;
+    });
+}

@@ -30,8 +30,6 @@ export default function Dashboard() {
     const [deleteId, setDeleteId] = useState();
     const {trigger, setTrigger} = useAlertContext();
     const {msg, setMsg} = useAlertContext();
-    //const [severity, setSeverity] = useAlertContext();
-    //const [message, setMessage] = useState(false);
 
     if(user.role == 'user') {
         return (<>
@@ -84,7 +82,12 @@ export default function Dashboard() {
     }
 
     const onEditClickHandler = (id) => {
-        console.log(id);
+        setDialogContent({
+            title: 'Create Property',
+            content: <PropertyForm propId={id} properties={properties} syncProperties={setProperties}/>,
+            isFullScreen: true
+        });
+        setOpenDialog(true);
     }
 
     const onDeleteClickHandler = (id) => {
@@ -96,14 +99,6 @@ export default function Dashboard() {
         })
         setOpenDialog(true);
     }
-
-    // const handleCloseMessage = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-    //
-    //     setMessage(false);
-    // };
 
     useEffect( () => {
         if(dialogAction) {

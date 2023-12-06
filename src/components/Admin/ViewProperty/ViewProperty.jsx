@@ -41,11 +41,11 @@ export default function ViewProperty({id}) {
                     }
                     <CardContent>
                         <div>
-                            <Typography gutterBottom variant="h5" component="div">
+                            <Typography gutterBottom variant="h5" component="span">
                                 {property.title}
                             </Typography>
                         </div>
-                        <Typography variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
+                        <Typography variant="body2" color="text.secondary" sx={{textAlign: 'left', marginTop: '2%', display: 'inline-block'}} component="span">
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
                                     <p className={vstyle.textGrid}>Price <Chip label={'$ ' + property.price} variant="outlined"/></p>

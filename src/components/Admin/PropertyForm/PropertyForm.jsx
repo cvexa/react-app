@@ -98,7 +98,7 @@ export default function PropertyForm({propId, properties, syncProperties})
                         setOpenDialog(false);
                         setTrigger(true);
                         setMsg('Successfully edited property!');
-                        properties.map( (data, position) => {
+                        properties.map( (data, position) => {//refresh properties list with the updated one
                             Object.keys(properties[position]).map( (key) => {
                                 if(properties[position].id === res.property.id) {
                                     properties[position] = {...res.property};

@@ -104,9 +104,17 @@ export default function Dashboard() {
         if(dialogAction) {
             setDialogAction(false);
             deleteProperty(deleteId).then( () => {
-                //setMessage(true);
                 setTrigger(true);
                 setMsg('Successfully deleted property!')
+                properties.map( (data, position) => {//refresh properties list without the deleted one
+                    Object.keys(properties[position]).map( (key) => {
+                        if(properties[position] && properties[position].id === deleteId) {
+                            delete properties[position];
+                            setPagination({...pagination, total: pagination.total -1})
+                        }
+                    })
+                })
+                setProperties(properties);
             })
         }
     }, [dialogAction])

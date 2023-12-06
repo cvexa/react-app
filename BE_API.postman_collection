@@ -718,6 +718,132 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "property create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMmQ4NzM3NzljMTc2MzYyOGQ4ZWVjOGU0MTlhN2QwOWRiMzQ0MTYwNjQzNjJhYzFhMGY1NzcwNDU2M2I1ODZiYmVjY2E4ZGM4MGU2NWI3MDgiLCJpYXQiOjE3MDE0NDA3MTQuNDE2MDg5LCJuYmYiOjE3MDE0NDA3MTQuNDE2MDkyLCJleHAiOjE3MTcyNTE5MTQuNDA1NCwic3ViIjoiMSIsInNjb3BlcyI6W119.FtY_i3eYhf_lpTik73E3BB8RYijqP7bGSRf05hVWvYvrFDmbot8v-lCIvS9f8wyoVw0-_4xF94WBHnZMW4zWubYsR_IoHuZVB2a7uWBkc_rS_vNZZnx840gfw9BZ-8tK-6r7Gbxg70T2GZSnwGYrr47PCbhaadrRMIC5BoRrQHcCe9-9NXm0GMDSTlGEsRJI-rmUy5jk26TL9dRSw_2_iK3d2mVEOb_1FV7dOsbwydQ9GUsPd_K9_fJvgD4ywSywnX2eAx0TkBKAZlRa4up-Kv4LA7uUdL2_mubzN3qY2YkKN04TSpPDphO30inv8NRDqYCjYertQkFEzWdg8U5-WMJz1LjpTdPktwx9225SVMnsj-6qC802x0t8zTGl1-HJ_4FYiSFOwqsM-exDenlRW0kbNSArRo536zRgQBjFh97RUcH7-BHGG9EGcQo3vejx7SUdEFD-lRY1n01i43gpKwCGcHgIT0KCghErbclVeNPC5buMMm94mN22DMISG9eJIV42IKOPjQ_nmOJS3dMnk3uUjt8AhJBluUjEtRdheRWqCk6VnApypwOj_PKsEnM-1x5mtQIp-NYD9DvosNGwj5MUvToGBVGRv1y8g7EQlDqkFuklKpwLW2lQiSLn4aZuTx2IL_4U8AfRIT3hjoL6QiWZjQf_8KYlheszLau5748",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "contract",
+							"value": "test",
+							"type": "default"
+						},
+						{
+							"key": "floor_number",
+							"value": "11",
+							"type": "default"
+						},
+						{
+							"key": "is_best_deal",
+							"value": "true",
+							"type": "default"
+						},
+						{
+							"key": "is_featured",
+							"value": "true",
+							"type": "default"
+						},
+						{
+							"key": "is_top",
+							"value": "true",
+							"type": "default"
+						},
+						{
+							"key": "location",
+							"value": "location",
+							"type": "default"
+						},
+						{
+							"key": "number_of_rooms",
+							"value": "11",
+							"type": "default"
+						},
+						{
+							"key": "payment_process",
+							"value": "yes",
+							"type": "default"
+						},
+						{
+							"key": "pic",
+							"value": "https://villafrankwhite.com/wp-content/uploads/2020/11/banner-01.jpg",
+							"type": "default"
+						},
+						{
+							"key": "price",
+							"value": "500000",
+							"type": "default"
+						},
+						{
+							"key": "published",
+							"value": "true",
+							"type": "default"
+						},
+						{
+							"key": "quadrature",
+							"value": "100",
+							"type": "default"
+						},
+						{
+							"key": "safety",
+							"value": "no",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "test",
+							"type": "default"
+						},
+						{
+							"key": "type",
+							"value": "Vila",
+							"type": "default"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/properties",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"properties"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

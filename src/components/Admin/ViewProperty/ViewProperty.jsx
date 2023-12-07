@@ -92,7 +92,7 @@ export default function ViewProperty({id, editHandler}) {
                                     <div className={vstyle.textGrid}>is best_deal <Chip label={property.is_best_deal === 1 ? 'yes' : 'no'} variant="outlined"/></div>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <div className={vstyle.textGrid}>created by <Chip label={property.created_by} variant="outlined"/></div>
+                                    <div className={vstyle.textGrid}>created by <Chip label={property.creator?.name} variant="outlined"/></div>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div className={vstyle.textGrid}>published <Chip label={property.published === 1 ? 'yes' : 'no'} variant="outlined"/></div>

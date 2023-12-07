@@ -9,6 +9,7 @@ import Profile from "../../Profile/Profile";
 import ViewProperty from "../ViewProperty/ViewProperty.jsx";
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
 import {useAlertContext} from "../../../contexts/Alert.jsx";
+import GenericNotFound from "../../GenericNotFound/GenericNotFound";
 
 export default function Users() {
     const { user, setUser } = useUserContext();
@@ -105,6 +106,9 @@ export default function Users() {
         }
     }, [dialogAction])
 
+    if(user.role !== 'admin') {
+        return <GenericNotFound />;
+    }
 
     return (
         <>

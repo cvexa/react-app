@@ -117,11 +117,9 @@ export default function Dashboard() {
         <>
             <div style={{marginBottom:"2%"}}>
                 <h2 style={{marginBottom:"2%"}}>Properties total : ( {properties && pagination.total} )</h2>
-                {user.role === 'admin' &&
-                    <Button variant="outlined" size="small" onClick={onCreateClickHandler}>
-                        Create
-                    </Button>
-                }
+                <Button variant="outlined" size="small" onClick={onCreateClickHandler}>
+                    Create
+                </Button>
             </div>
             <div style={{ height: 400, width: '100%' }}>
                 {properties &&

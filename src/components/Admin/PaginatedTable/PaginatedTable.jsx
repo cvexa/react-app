@@ -29,7 +29,7 @@ export default function PaginatedTable({pagination, rowsData, tableDataSkeleton,
                             >
                                 {tableDataSkeleton.map((rowData) => (
                                     <TableCell key={rowData.headerName} component="th" scope="row">
-                                        {rowData.field !== null ? row[rowData.field] : <TableActions {...actions} dataId={row.id} />}
+                                        {rowData.field !== null ? row[rowData.field] : <TableActions {...actions} dataId={row.id} creatorId={row.creator?.id}/>}
                                     </TableCell>
                                 ))}
                             </TableRow>

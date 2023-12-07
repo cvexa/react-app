@@ -30,7 +30,7 @@ Also there is fallback page `src/components/GenericNotFound/GenericNotFound.jsx`
 
 -private <br/>
 /dashboard - `src/components/Admin/Dashboard/Dashboard.jsx` - first page after login, here users can see list of properties as a paginated table <br/>
-users with role 'user' will see list of properties which are published = 1 only (so the same which are listed in the public part) with the only action VIEW <br/>
+users with role 'user' will see list of properties which are published = 1 with action VIEW plus the one which he is created with actions edit and delete<br/>
 users with role 'admin' will see list of ALL properties in the DB with actions to create, view, edit and delete property <br/>
 /users - `src/components/Admin/Users/Users.jsx` - only for admin users, see paginated table of all users, with actions to view, edit and delete users. <br/>
 /my-profile - `src/components/Profile/Profile.jsx` - every logged in users, can access this page, where can edit his profile information or delete profile (if so after deletion redirect to home) <br/>

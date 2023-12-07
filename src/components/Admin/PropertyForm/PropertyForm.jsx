@@ -20,9 +20,11 @@ import Typography from "@mui/material/Typography";
 import {createProperty, GetPropertyById, GetPropertyTypes, updateProperty} from "../../../services/properties.jsx";
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
 import {useAlertContext} from "../../../contexts/Alert.jsx";
+import {useUserContext} from "../../../contexts/User.jsx";
 
 export default function PropertyForm({propId, properties, syncProperties, pagination, syncPagination})
 {
+    const { user, setUser } = useUserContext();
     const mapPropertyFields = () => {
         let fillObj = {};
         propertyFields.map( (v,k) => {
@@ -35,6 +37,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
     const [propertyObj, setPropertyObj] = useState(mapPropertyFields);
     const errorsLayout = {
         title:'Must be least 3 characters long, and maximum 50',
+        description: 'Must be least 3 characters lond, and maxmimum 150',
         pic:'Must be a link to an image, least 3 characters long, and maximum 150',
         price:'Must be numeric and in the range of 10 - 100 000 000',
         location:'Must be a link to an image, least 3 characters long, and maximum 150',
@@ -314,6 +317,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
                                     value="check"
+                                    disabled={user.role !== 'admin'}
                                     selected={typeof propertyObj.is_top == 'string' || typeof propertyObj.is_top === 0 ? false : propertyObj.is_top}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_top: !propertyObj.is_top});
@@ -329,6 +333,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
                                     value="check"
+                                    disabled={user.role !== 'admin'}
                                     selected={typeof propertyObj.is_featured == 'string' || typeof propertyObj.is_featured === 0 ? false : propertyObj.is_featured}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_featured: !propertyObj.is_featured});
@@ -344,6 +349,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
                                     value="check"
+                                    disabled={user.role !== 'admin'}
                                     selected={typeof propertyObj.is_best_deal == 'string' || typeof propertyObj.is_best_deal === 0 ? false : propertyObj.is_best_deal}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_best_deal: !propertyObj.is_best_deal});
@@ -463,6 +469,27 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     setErrors({
                                         ...errors,
                                         quadrature: validateForm(e.target.value, 'number',{min:1,max:10000})
+                                    });
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={3}></Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                autoComplete="description"
+                                name="description"
+                                required
+                                fullWidth
+                                id="description"
+                                label="Description"
+                                error={errors.description}
+                                helperText={errorsLayout.description}
+                                value={propertyObj.description}
+                                onChange={(e) => {
+                                    setPropertyObj({...propertyObj, description: e.target.value});
+                                    setErrors({
+                                        ...errors,
+                                        description: validateForm(e.target.value, 'string',{min:3,max:150})
                                     });
                                 }}
                             />

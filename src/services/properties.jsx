@@ -35,8 +35,15 @@ export async function GetBestDealPropertyByTypes(type) {
 
 export async function getPaginatedProperties(perPage, page) {
     requestOptions.method = 'GET';
+    let userToken = getUser().token;
+    if(userToken) {
+        requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    }
 
-    return await fetch(`${baseUrl}properties?per_page=${perPage ?? 10}&page=${page}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
+    return await fetch(`${baseUrl}properties?per_page=${perPage ?? 10}&page=${page}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+    }).then(response => response.json()).then((data) => {
         return data;
     })
 }
@@ -75,7 +82,7 @@ export async function createProperty(data) {
     requestOptions.method = 'POST';
     requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     requestOptions.body = JSON.stringify({...data});
-    console.log(requestOptions);
+
     return await fetch(`${baseUrl}properties`, {
         method: requestOptions.method,
         headers: requestOptions.headers,

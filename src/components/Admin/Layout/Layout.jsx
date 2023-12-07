@@ -16,11 +16,11 @@ export default function AdminLayout(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                <DialogProvider>
-                    <AlertProvider>
-                        {props.children}
-                    </AlertProvider>
-                </DialogProvider>
+                <AlertProvider>
+                    <DialogProvider>
+                            {props.children}
+                    </DialogProvider>
+                </AlertProvider>
             </Box>
         </Box>
     );

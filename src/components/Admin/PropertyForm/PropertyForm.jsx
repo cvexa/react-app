@@ -21,13 +21,14 @@ import {createProperty, GetPropertyById, GetPropertyTypes, updateProperty} from 
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
 import {useAlertContext} from "../../../contexts/Alert.jsx";
 
-export default function PropertyForm({propId, properties, syncProperties})
+export default function PropertyForm({propId, properties, syncProperties, pagination, syncPagination})
 {
     const mapPropertyFields = () => {
         let fillObj = {};
         propertyFields.map( (v,k) => {
             fillObj[v] = '';
         });
+        fillObj.type = 'Apartment';
         return fillObj;
     };
 
@@ -119,6 +120,7 @@ export default function PropertyForm({propId, properties, syncProperties})
                 createProperty(propertyObj).then((res) => {
                     if(res.success) {
                         setPropertyObj(mapPropertyFields);
+                        syncPagination({...pagination, total: pagination.total + 1});
                         setOpenDialog(false);
                         setTrigger(true);
                         setMsg('Successfully created property!');

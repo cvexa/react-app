@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useUserContext} from "../../../contexts/User.jsx";
 import {useEffect, useState} from "react";
 import {deleteProperty, getPaginatedProperties, GetTop} from "../../../services/properties.jsx";
-import {propertiesTableSkeleton} from "../../../utils/properties.js";
+import {parseIntValuesFromPropertyFieldsFromBe, propertiesTableSkeleton} from "../../../utils/properties.js";
 import PaginatedTable from "../PaginatedTable/PaginatedTable.jsx";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
@@ -40,7 +40,8 @@ export default function Dashboard() {
     useEffect(() => {
         try {
             getPaginatedProperties(perPage).then( (res) => {
-                setProperties(res.data);
+                let parsedProp = parseIntValuesFromPropertyFieldsFromBe(res.data);
+                setProperties(parsedProp);
                 setPagination({
                     page: res.current_page,
                     count: res.last_page,
@@ -54,7 +55,7 @@ export default function Dashboard() {
 
     const handleChangePage = (event, page) => {
         getPaginatedProperties(perPage, page).then( (res) => {
-            setProperties(res.data);
+            setProperties(parseIntValuesFromPropertyFieldsFromBe(res.data));
             setPagination({
                 page: res.current_page,
                 count: res.last_page,
@@ -75,7 +76,7 @@ export default function Dashboard() {
     const onCreateClickHandler = () => {
         setDialogContent({
             title: 'Create Property',
-            content: <PropertyForm />,
+            content: <PropertyForm pagination={pagination} syncPagination={setPagination}/>,
             isFullScreen: true
         });
         setOpenDialog(true);

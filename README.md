@@ -1,3 +1,60 @@
+## Run application
+
+npm i & npm run dev
+
+http://localhost:5173/
+
+## Router
+[src/components/Router] 
+![img.png](img.png)
+
+there is PublicLayout and AdminLayout, which are holding the components <br/>
+-in the PublicLayout `src/components/PublicLayout/PublicLayout.jsx` there is the `src/components/Header/Header.jsx` and the <br/>
+`src/components/Footer/Footer.jsx` components <br/>
+-in the `src/components/Admin/Layout/Layout.jsx` there is the sidebar and top bar for logged in users panel<br/>
+the admin layout is surrounded by `<AlertProvider>` - responsible for snackbar alers and  `<DialogProvider>` - responsible for all dialog/modal windows <br/>
+
+For the logged in users routes there is guard `src/guards/AuthGuard.jsx`<br/>
+Also there is fallback page `src/components/GenericNotFound/GenericNotFound.jsx` for not found urls, or when user is trying to open guarded route<br/>
+
+
+## Pages
+
+-public <br/>
+ / - `src/components/Home/Home.jsx` - holding all other components of the home page <br/>
+/properties - `src/components/ListOfProperties/ListOfProperties.jsx` paginated list of properties who are published = 1 also there is filter by type <br/>
+/contacts - `src/components/Contacts/Contacts.jsx` static page <br/>
+/property/:id - `src/components/SingleProperty/SingleProperty.jsx` - public page for detailed view of property <br/>
+/login - `src/components/Login/Login.jsx` - login form with valdiation for log in 
+/register - `src/components/Register/Register.jsx` - register form with validation
+
+-private <br/>
+/dashboard - `src/components/Admin/Dashboard/Dashboard.jsx` - first page after login, here users can see list of properties as a paginated table <br/>
+users with role 'user' will see list of properties which are published = 1 only (so the same which are listed in the public part) with the only action VIEW <br/>
+users with role 'admin' will see list of ALL properties in the DB with actions to create, view, edit and delete property <br/>
+/users - `src/components/Admin/Users/Users.jsx` - only for admin users, see paginated table of all users, with actions to view, edit and delete users. <br/>
+/my-profile - `src/components/Profile/Profile.jsx` - every logged in users, can access this page, where can edit his profile information or delete profile (if so after deletion redirect to home) <br/>
+
+## Styles
+
+Public part is using free template - https://templatemo.com/live/templatemo_591_villa_agency
+Both public and private parts are using - https://mui.com/
+
+## Services
+`src/services/properties.jsx` - responsible for all interactions with the BE regarding properties <br/>
+`src/services/user.jsx` - responsible for all interactions with the BE regarding properties <br/>
+
+## Utils
+`src/utils` - holding different util helper functions for properties, requests users and other.
+
+## Contexts
+`src/contexts` - holding Alert context, Dialog context and User context used across the application
+
+## BE API 
+The api used for the project is on LARAVEL and this is the repo => https://github.com/cvexa/react-app-be <br/>
+in the project root folder there is Postman collection `BE_API.postman_collection` containing all requests to the BE
+
+------------------------------------------------------------------------------------
 React.js Project Assignment
 
 Your task is to design and implement a web application (Single Page Application) using React.js. Use a service like Kinvey or Firebase for your back-end or create your own with Node.js and MongoDB or a framework in another language (ASP.NET, Spring, Symfony). It can be a discussion forum, blog system, e-commerce site, online gaming site, social network, or any other web application of your choice.

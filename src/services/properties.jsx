@@ -50,16 +50,30 @@ export async function getPaginatedProperties(perPage, page) {
 
 export async function GetPropertyById(id) {
     requestOptions.method = 'GET';
+    let userToken = getUser().token;
+    if(userToken) {
+        requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    }
 
-    return await fetch(`${baseUrl}properties/${id}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
+    return await fetch(`${baseUrl}properties/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers
+    }).then(response => response.json()).then((data) => {
         return data;
     })
 }
 
 export async function getPaginatedPropertiesByType(perPage, page, type) {
     requestOptions.method = 'GET';
+    let userToken = getUser().token;
+    if(userToken) {
+        requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
+    }
 
-    return await fetch(`${baseUrl}properties-by-type?per_page=${perPage ?? 10}&page=${page}&type=${type}`, [requestOptions.method, requestOptions.headers]).then(response => response.json()).then((data) => {
+    return await fetch(`${baseUrl}properties-by-type?per_page=${perPage ?? 10}&page=${page}&type=${type}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers
+    }).then(response => response.json()).then((data) => {
         return data;
     })
 }

@@ -19,8 +19,8 @@ export default function AppRouter(props) {
 
     return (<Routes>
         <Route path={`${props.match}/`} exact element={<PublicLayout><Home/></PublicLayout>}/>
-        <Route path={`${props.match}/login`} exact element={<PublicLayout><Login/></PublicLayout>}/> {/*//to do redirect if user is logged in*/}
-        <Route path={`${props.match}/register`} exact element={<PublicLayout><Register/></PublicLayout>}/> {/*//to do redirect if user is logged in*/}
+        <Route path={`${props.match}/login`} exact element={<PublicLayout><Login/></PublicLayout>}/>
+        <Route path={`${props.match}/register`} exact element={<PublicLayout><Register/></PublicLayout>}/>
         <Route path={`${props.match}/contacts`} exact element={<PublicLayout><Contacts/></PublicLayout>}/>
         <Route path={`${props.match}/properties`} exact element={<PublicLayout><ListOfProperties/></PublicLayout>}/>
         <Route path={`${props.match}/property/:id`} exact element={<PublicLayout><SingleProperty/></PublicLayout>}/>

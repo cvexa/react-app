@@ -110,9 +110,7 @@ export default function Users() {
         <>
             <h2 style={{marginBottom:"2%"}}>Users total : ( {users && pagination.total} )</h2>
             <div style={{marginBottom:"2%"}}>
-                <Button variant="outlined" size="small">
-                    Create
-                </Button>
+
             </div>
             <div style={{ height: 400, width: '100%' }}>
                 {users &&

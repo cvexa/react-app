@@ -1,25 +1,32 @@
 import Button from "@mui/material/Button";
 import SettingsIcon from '@mui/icons-material/Settings';
+import {useUserContext} from "../../../contexts/User.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function TableActions({onViewClickHandler, onEditClickHandler, onDeleteClickHandler, settings, dataId }) {
+    const { user, setUser } = useUserContext();
+    const navigate = useNavigate();
+
     return (
         <>
             {onViewClickHandler &&
                 <Button variant="contained" size="small" color={"success"} sx={{marginRight: '2%', marginBottom: '1%'}}
-                        onClick={() => onViewClickHandler(dataId)}>View</Button>
+                        onClick={() => user.role === 'admin' ? onViewClickHandler(dataId) : navigate('/property/'+dataId)}>View</Button>
             }
-            {onEditClickHandler &&
-                <Button variant="contained" size="small" sx={{marginRight: '2%', marginBottom: '1%'}}
-                        onClick={() => onEditClickHandler(dataId)}>Edit</Button>
-            }
-            {onDeleteClickHandler &&
-                <Button variant="contained" size="small" color={"error"} sx={{marginRight: '2%', marginBottom: '1%'}}
-                        onClick={() => onDeleteClickHandler(dataId)}>Delete</Button>
-            }
-            {settings &&
-                <Button variant="contained" size="small" color={"success"} sx={{marginRight: '2%', marginBottom: '1%'}}
-                    onClick={() => settings(dataId)}><SettingsIcon /></Button>
-            }
+            {user.role === 'admin' && (<>
+                {onEditClickHandler &&
+                    <Button variant="contained" size="small" sx={{marginRight: '2%', marginBottom: '1%'}}
+                            onClick={() => onEditClickHandler(dataId)}>Edit</Button>
+                }
+                {onDeleteClickHandler &&
+                    <Button variant="contained" size="small" color={"error"} sx={{marginRight: '2%', marginBottom: '1%'}}
+                            onClick={() => onDeleteClickHandler(dataId)}>Delete</Button>
+                }
+                {settings &&
+                    <Button variant="contained" size="small" color={"success"} sx={{marginRight: '2%', marginBottom: '1%'}}
+                        onClick={() => settings(dataId)}><SettingsIcon /></Button>
+                }
+            </>)}
         </>
     );
 }

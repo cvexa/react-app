@@ -7,9 +7,7 @@ import PaginatedTable from "../PaginatedTable/PaginatedTable.jsx";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
-import CustomDialog from "../CustomDialog/CustomDialog.jsx";
 import ViewProperty from "../ViewProperty/ViewProperty.jsx";
-import {Alert, Snackbar} from "@mui/material";
 import PropertyForm from "../PropertyForm/PropertyForm.jsx";
 import {useAlertContext} from "../../../contexts/Alert.jsx";
 
@@ -30,12 +28,6 @@ export default function Dashboard() {
     const [deleteId, setDeleteId] = useState();
     const {trigger, setTrigger} = useAlertContext();
     const {msg, setMsg} = useAlertContext();
-
-    if(user.role == 'user') {
-        return (<>
-            Wellcome {user.name}
-        </>);
-    }
 
     useEffect(() => {
         try {
@@ -67,7 +59,7 @@ export default function Dashboard() {
     const onViewClickHandler = (id) => {
         setDialogContent({
             title: 'View property',
-            content: <ViewProperty id={id}/>,
+            content: <ViewProperty id={id} editHandler={onEditClickHandler}/>,
             actionBtnText: ''
         })
         setOpenDialog(true);
@@ -125,9 +117,11 @@ export default function Dashboard() {
         <>
             <div style={{marginBottom:"2%"}}>
                 <h2 style={{marginBottom:"2%"}}>Properties total : ( {properties && pagination.total} )</h2>
-                <Button variant="outlined" size="small" onClick={onCreateClickHandler}>
-                    Create
-                </Button>
+                {user.role === 'admin' &&
+                    <Button variant="outlined" size="small" onClick={onCreateClickHandler}>
+                        Create
+                    </Button>
+                }
             </div>
             <div style={{ height: 400, width: '100%' }}>
                 {properties &&

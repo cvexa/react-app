@@ -8,10 +8,6 @@ export default function TableActions({onViewClickHandler, onEditClickHandler, on
     const { user, setUser } = useUserContext();
     const navigate = useNavigate();
 
-    useEffect( () => {
-        console.log(creatorId);
-    });
-
     return (
         <>
             {onViewClickHandler &&

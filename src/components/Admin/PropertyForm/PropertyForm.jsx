@@ -98,7 +98,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
             if(isFormReady) {
                 updateProperty(propId, propertyObj).then( (res) => {
                     if(res.success) {
-                        setPropertyObj(mapPropertyFields);
+                        setPropertyObj({...res.property});
                         setOpenDialog(false);
                         setTrigger(true);
                         setMsg('Successfully edited property!');

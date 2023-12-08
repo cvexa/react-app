@@ -47,11 +47,11 @@ export function parseNullPropertyFieldsFromBe(property) {
 }
 
 export function parseIntValuesFromPropertyFieldsFromBe(property) {
-    property.is_best_deal = property.is_best_deal !== 0;
-    property.is_featured = property.is_featured !== 0;
-    property.is_top = property.is_top !== 0;
-    property.published = property.published !== 0;
-    property.with_parking = property.with_parking !== 0;
+    property.is_best_deal = typeof property.is_best_deal != 'string' && property.is_best_deal !== 0;
+    property.is_featured = typeof property.is_featured != 'string' && property.is_featured !== 0;
+    property.is_top = typeof property.is_top != 'string' && property.is_top !== 0;
+    property.published = typeof property.published != 'string' && property.published !== 0;
+    property.with_parking = typeof property.with_parking != 'string' && property.with_parking !== 0;
 
     return property;
 }

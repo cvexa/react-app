@@ -31,7 +31,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
             fillObj[v] = '';
         });
         fillObj.type = 'Apartment';
-        return fillObj;
+        return parseIntValuesFromPropertyFieldsFromBe(fillObj);
     };
 
     const [propertyObj, setPropertyObj] = useState(mapPropertyFields);
@@ -58,6 +58,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
     const {msg, setMsg} = useAlertContext();
 
     useEffect( () => {
+        setPropertyObj(mapPropertyFields);
         if(propId) {
             try {
                 GetPropertyById(propId).then((res) => {
@@ -302,7 +303,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
                                     value="check"
-                                    selected={typeof propertyObj.with_parking == 'string' || typeof propertyObj.with_parking === 0 ? false : propertyObj.with_parking}
+                                    selected={propertyObj.with_parking}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, with_parking: !propertyObj.with_parking});
                                     }}
@@ -318,7 +319,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     color={'success'}
                                     value="check"
                                     disabled={user.role !== 'admin'}
-                                    selected={typeof propertyObj.is_top == 'string' || typeof propertyObj.is_top === 0 ? false : propertyObj.is_top}
+                                    selected={propertyObj.is_top}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_top: !propertyObj.is_top});
                                     }}
@@ -334,7 +335,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     color={'success'}
                                     value="check"
                                     disabled={user.role !== 'admin'}
-                                    selected={typeof propertyObj.is_featured == 'string' || typeof propertyObj.is_featured === 0 ? false : propertyObj.is_featured}
+                                    selected={propertyObj.is_featured}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_featured: !propertyObj.is_featured});
                                     }}
@@ -350,7 +351,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     color={'success'}
                                     value="check"
                                     disabled={user.role !== 'admin'}
-                                    selected={typeof propertyObj.is_best_deal == 'string' || typeof propertyObj.is_best_deal === 0 ? false : propertyObj.is_best_deal}
+                                    selected={propertyObj.is_best_deal}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, is_best_deal: !propertyObj.is_best_deal});
                                     }}
@@ -365,7 +366,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
                                     value="check"
-                                    selected={typeof propertyObj.published == 'string' || typeof propertyObj.published === 0 ? false : propertyObj.published}
+                                    selected={propertyObj.published}
                                     onChange={() => {
                                         setPropertyObj({...propertyObj, published: !propertyObj.published});
                                     }}

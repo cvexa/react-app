@@ -21,7 +21,7 @@ Also there is fallback page `src/components/GenericNotFound/GenericNotFound.jsx`
 ## Pages
 
 -public <br/>
- / - `src/components/Home/Home.jsx` - holding all other components of the home page <br/>
+ / - `src/components/Home/Home.jsx` - holding all other components of the home page <br/> (`src/components/Header/Header.jsx` - usage of external datetime api - https://worldtimeapi.org/)
 /properties - `src/components/ListOfProperties/ListOfProperties.jsx` paginated list of properties who are published = 1 also there is filter by type <br/>
 /contacts - `src/components/Contacts/Contacts.jsx` static page <br/>
 /property/:id - `src/components/SingleProperty/SingleProperty.jsx` - public page for detailed view of property <br/>

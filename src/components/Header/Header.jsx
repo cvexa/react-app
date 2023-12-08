@@ -3,12 +3,14 @@ import {Link, NavLink} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styles from './Header.module.css';
 import {useUserContext} from "../../contexts/User.jsx";
+import {getCurrentTime} from "../../services/timeZoneApi.js";
 
 export default function Header() {
     const defaultHeaderClass = 'header-area header-sticky';
     const [headerClass, setHeaderClass] = useState(defaultHeaderClass);
     const [mobileMenuClicked, setMobileMenuClicked] = useState(false);
     const { user, setUser } = useUserContext();
+    const [currentTime, setCurrentTime] = useState();
 
     useEffect(() => {
         const updatePosition = () => {
@@ -31,6 +33,14 @@ export default function Header() {
     const mobileMenuHandler = () => {
         setMobileMenuClicked(old => !old);
     }
+
+    useEffect( () => {
+        getCurrentTime().then((res) => {
+            if(res.utc_datetime) {
+                setCurrentTime(new Date(res.utc_datetime).toLocaleDateString());
+            }
+        });
+    }, []);
 
 
     return (<>
@@ -58,7 +68,7 @@ export default function Header() {
                                      </>
                                     }
 
-                                    <li><a href="#"><i className="fa fa-calendar"></i> Schedule a visit</a></li>
+                                    <li><a href="#"><i className="fa fa-calendar"></i> {currentTime && currentTime}</a></li>
                                 </ul>
                                 <a className={`menu-trigger ${mobileMenuClicked ? ' active' : ''}`} onClick={mobileMenuHandler}>
                                     <span>Menu</span>

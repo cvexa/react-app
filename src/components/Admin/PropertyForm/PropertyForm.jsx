@@ -1,15 +1,10 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {validateNum, validatePrice, validateString} from "../../../utils/validations.js";
 import Button from "@mui/material/Button";
-import {
-    Alert,
-    MenuItem,
-    Select,
-    ToggleButton
-} from "@mui/material";
+import {Alert, MenuItem, ToggleButton} from "@mui/material";
 import {
     parseIntValuesFromPropertyFieldsFromBe,
     parseNullPropertyFieldsFromBe,
@@ -17,14 +12,19 @@ import {
 } from "../../../utils/properties.js";
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from "@mui/material/Typography";
-import {createProperty, GetPropertyById, GetPropertyTypes, updateProperty} from "../../../services/properties.jsx";
+import {
+    checkAvailableFeatured,
+    createProperty,
+    GetPropertyById,
+    GetPropertyTypes,
+    updateProperty
+} from "../../../services/properties.jsx";
 import {useDialogContext} from "../../../contexts/Dialog.jsx";
 import {useAlertContext} from "../../../contexts/Alert.jsx";
 import {useUserContext} from "../../../contexts/User.jsx";
 
 export default function PropertyForm({propId, properties, syncProperties, pagination, syncPagination})
 {
-    const { user, setUser } = useUserContext();
     const mapPropertyFields = () => {
         let fillObj = {};
         propertyFields.map( (v,k) => {
@@ -33,6 +33,11 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
         fillObj.type = 'Apartment';
         return parseIntValuesFromPropertyFieldsFromBe(fillObj);
     };
+
+    const { user, setUser } = useUserContext();
+    const {trigger, setTrigger} = useAlertContext();
+    const {msg, setMsg} = useAlertContext();
+    const { openDialog, setOpenDialog } = useDialogContext();
 
     const [propertyObj, setPropertyObj] = useState(mapPropertyFields);
     const errorsLayout = {
@@ -52,10 +57,8 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
     const [propertyTypes, setPropertyTypes] = useState({});
     const [isFormReady, setIsFormReady] = useState(false);
     const [submitError, setSubmitError] = useState();
-    const { openDialog, setOpenDialog } = useDialogContext();
-    const [message, setMessage] = useState(false);
-    const {trigger, setTrigger} = useAlertContext();
-    const {msg, setMsg} = useAlertContext();
+    const [isFeaturedNotAllowed, setIsFeaturedNotAllowed] = useState(false);
+    const [featuredNotAllowedMsg, setFeaturedNotAllowedMsg] = useState();
 
     useEffect( () => {
         setPropertyObj(mapPropertyFields);
@@ -100,6 +103,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                 updateProperty(propId, propertyObj).then( (res) => {
                     if(res.success) {
                         setPropertyObj({...res.property});
+                        setFeaturedNotAllowedMsg(undefined);
                         setOpenDialog(false);
                         setTrigger(true);
                         setMsg('Successfully edited property!');
@@ -124,6 +128,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                 createProperty(propertyObj).then((res) => {
                     if(res.success) {
                         setPropertyObj(mapPropertyFields);
+                        setFeaturedNotAllowedMsg(undefined);
                         syncPagination({...pagination, total: pagination.total + 1});
                         setOpenDialog(false);
                         setTrigger(true);
@@ -154,6 +159,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
     }
 
     useEffect( () => {
+        setIsFeaturedNotAllowed(false);
         try {
             GetPropertyTypes().then((res) => {
                 if (!res.message) {
@@ -169,6 +175,16 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
             console.log(e);
         }
     },[]);
+
+    const checkAvailableFeaturedHandler = () => {
+        return checkAvailableFeatured(propertyObj.id).then((res) => {
+            if (!res.isAllowed) {
+                setPropertyObj({...propertyObj, is_featured: false});
+                setFeaturedNotAllowedMsg('You are not allowed to have more than one featured and published property!')
+            }
+            setIsFeaturedNotAllowed(!res.isAllowed);
+        });
+    }
 
 
     return (<>
@@ -297,8 +313,8 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={1}>
-                            <Typography> with parking?
+                        <Grid item xs={12} sm={2}>
+                            <Typography component={'span'}> with parking?
                                 <ToggleButton
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
@@ -312,40 +328,9 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                 </ToggleButton>
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={1}>
-                            <Typography sx={{textAlign:'center'}}> is Top?
-                                <ToggleButton
-                                    sx={{marginLeft:"1%"}}
-                                    color={'success'}
-                                    value="check"
-                                    disabled={user.role !== 'admin'}
-                                    selected={propertyObj.is_top}
-                                    onChange={() => {
-                                        setPropertyObj({...propertyObj, is_top: !propertyObj.is_top});
-                                    }}
-                                >
-                                    <CheckIcon />
-                                </ToggleButton>
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={1}>
-                            <Typography sx={{textAlign:'center'}}> is Featured?
-                                <ToggleButton
-                                    sx={{marginLeft:"1%"}}
-                                    color={'success'}
-                                    value="check"
-                                    disabled={user.role !== 'admin'}
-                                    selected={propertyObj.is_featured}
-                                    onChange={() => {
-                                        setPropertyObj({...propertyObj, is_featured: !propertyObj.is_featured});
-                                    }}
-                                >
-                                    <CheckIcon />
-                                </ToggleButton>
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={1}>
-                            <Typography> is Best Deal?
+
+                        <Grid item xs={12} sm={2}>
+                            <Typography component={'span'}> is Best Deal?
                                 <ToggleButton
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
@@ -360,8 +345,8 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                 </ToggleButton>
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={1}>
-                            <Typography> is Published?
+                        <Grid item xs={12} sm={2} sx={{textAlign:'right'}}>
+                            <Typography component={'span'}> is Published?
                                 <ToggleButton
                                     sx={{marginLeft:"1%"}}
                                     color={'success'}
@@ -374,25 +359,6 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     <CheckIcon />
                                 </ToggleButton>
                             </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={1}>
-                            {propertyTypes.length > 0 &&
-                                <Typography component={'span'} sx={{marginRight: '1%'}}> Type
-                                    <Select
-                                        labelId="type-label"
-                                        id="type"
-                                        value={propertyObj.type}
-                                        label="Type"
-                                        onChange={ (e) => {
-                                            setPropertyObj({...propertyObj, type: e.target.value});
-                                        }}
-                                    >
-                                        {propertyTypes.map( (type, key) => {
-                                            return <MenuItem key={key} value={type}>{type}</MenuItem>
-                                        })}
-                                    </Select>
-                                </Typography>
-                            }
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
@@ -474,7 +440,56 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={3}></Grid>
+                        <Grid item xs={12} sm={1}>
+                            <Typography sx={{textAlign:'center'}}> is Top?
+                                <ToggleButton
+                                    sx={{marginLeft:"1%"}}
+                                    color={'success'}
+                                    value="check"
+                                    disabled={user.role !== 'admin'}
+                                    selected={propertyObj.is_top}
+                                    onChange={() => {
+                                        setPropertyObj({...propertyObj, is_top: !propertyObj.is_top});
+                                    }}
+                                >
+                                    <CheckIcon />
+                                </ToggleButton>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                            <Typography sx={{textAlign:'center'}}> is Featured?
+                                <ToggleButton
+                                    sx={{marginLeft:"1%"}}
+                                    color={'success'}
+                                    value="check"
+                                    disabled={user.role !== 'admin'}
+                                    selected={propertyObj.is_featured}
+                                    onChange={() => {
+                                        setPropertyObj({...propertyObj, is_featured: !propertyObj.is_featured});
+                                        checkAvailableFeaturedHandler();
+                                    }}
+                                >
+                                    <CheckIcon />
+                                </ToggleButton>
+                                <br/>
+                                {featuredNotAllowedMsg && <>
+                                    <span style={{color:"red", fontSize:'10px'}}>
+                                        {featuredNotAllowedMsg}
+                                    </span>
+                                    <br/>
+                                    <Button
+                                        variant="outlined"
+                                        sx={{mt: 1, mb: 1}}
+                                        size={'small'}
+                                        onClick={() => {
+                                            setFeaturedNotAllowedMsg(undefined)
+                                        }}
+                                    >
+                                       close
+                                    </Button>
+                                </>}
+                            </Typography>
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="description"
@@ -494,6 +509,27 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                                     });
                                 }}
                             />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                            {propertyTypes.length > 0 &&
+                                <Typography component={'span'} sx={{marginRight: '1%'}}>
+                                    <TextField
+                                        value={propertyObj.type}
+                                        id="type"
+                                        name="type"
+                                        sx={{width: '100%'}}
+                                        select // tell TextField to render select
+                                        label="Type"
+                                        onChange={ (e) => {
+                                            setPropertyObj({...propertyObj, type: e.target.value});
+                                        }}
+                                    >
+                                    {propertyTypes.map( (type, key) => {
+                                        return <MenuItem key={key} value={type}>{type}</MenuItem>
+                                    })}
+                                    </TextField>
+                                </Typography>
+                            }
                         </Grid>
                     </Grid>
                     <div style={{textAlign:'center'}}>

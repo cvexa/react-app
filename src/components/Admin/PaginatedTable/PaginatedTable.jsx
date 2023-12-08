@@ -29,9 +29,10 @@ export default function PaginatedTable({pagination, rowsData, tableDataSkeleton,
                             >
                                 {tableDataSkeleton.map((rowData) => (
                                     <TableCell key={rowData.headerName} component="th" scope="row">
-                                        {rowData.field === 'published' ?
+                                        {rowData.field === 'published' || rowData.field === 'is_featured'?
                                             (<>
-                                                {row[rowData.field] === 1 ? 'yes' : 'no'}
+                                                {rowData.field === 'published' ? row[rowData.field] === 1 ? 'yes' : 'no' : ''}
+                                                {rowData.field === 'is_featured' ? row[rowData.field] === 1 ? 'yes' : 'no' : ''}
                                             </>)
                                             :
                                             (<>

@@ -120,3 +120,14 @@ export async function updateProperty(id,data) {
         return data;
     });
 }
+
+export async function checkAvailableFeatured(id) {
+    requestOptions.method = 'GET';
+
+    return await fetch(`${baseUrl}check-available-featured/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers
+    }).then(response => response.json()).then((data) => {
+        return data;
+    })
+}

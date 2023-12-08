@@ -5,7 +5,7 @@ export const propertiesTableSkeleton = [
     {field: 'type', headerName: 'Type'},
     {field: 'price', headerName: 'Price'},
     {field: 'location', headerName: 'Location'},
-    {field: 'floor_number', headerName: 'Floor Number'},
+    {field: 'is_featured', headerName: 'Is Featured'},
     {field: 'published', headerName:  'Is Published'},
     {field: null, headerName: 'Actions'}
 ];

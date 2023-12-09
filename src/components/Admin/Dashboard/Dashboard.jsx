@@ -68,7 +68,7 @@ export default function Dashboard() {
     const onCreateClickHandler = () => {
         setDialogContent({
             title: 'Create Property',
-            content: <PropertyForm pagination={pagination} syncPagination={setPagination}/>,
+            content: <PropertyForm pagination={pagination} syncPagination={setPagination} properties={properties} syncProperties={setProperties}/>,
             isFullScreen: true
         });
         setOpenDialog(true);

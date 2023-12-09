@@ -80,7 +80,7 @@ export default function ViewProperty({id, editHandler}) {
                                     <div className={vstyle.textGrid}>quadrature <Chip label={property.quadrature} variant="outlined"/></div>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <div className={vstyle.textGrid}>description <Chip label={property.description} variant="outlined"/></div>
+                                    <div className={vstyle.textGrid}>description <Chip sx={{maxWidth: "100px"}} label={property.description} variant="outlined"/></div>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div className={vstyle.textGrid}>is top <Chip label={property.is_top === 1 ? 'yes' : 'no'} variant="outlined"/></div>

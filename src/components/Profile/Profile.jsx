@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
 import CustomDialog from "../Admin/CustomDialog/CustomDialog.jsx";
 import {useDialogContext} from "../../contexts/Dialog.jsx";
+import {useAlertContext} from "../../contexts/Alert.jsx";
 
 export default function Profile({userId, usersList, syncUsers, pagination, syncPagination}) {
     const usrObjLayout = {
@@ -39,6 +40,8 @@ export default function Profile({userId, usersList, syncUsers, pagination, syncP
     const { openDialog, setOpenDialog } = useDialogContext();
     const { dialogAction, setDialogAction } = useDialogContext();
     const { dialogContent, setDialogContent } = useDialogContext();
+    const {trigger, setTrigger} = useAlertContext();
+    const {msg, setMsg} = useAlertContext();
 
 
     const fetchUser = () => {
@@ -71,7 +74,12 @@ export default function Profile({userId, usersList, syncUsers, pagination, syncP
     const handleUpdateClick = () => {
         let name = userObj.firstName + ' ' + userObj.lastName;
         try {
-            updateUserById(userById.id, {email: userObj.email, name: name}).then((res) => {
+            let updateData = {email: userObj.email, name: name};
+            if(updateData.email === userById.email) {
+                delete updateData['email'];
+            }
+            console.log(updateData);
+            updateUserById(userById.id, updateData).then((res) => {
                 if(res.status) {
                     setUserById(res.data);
                     let name = res.data.name.split(/(?<=^\S+)\s/);
@@ -86,6 +94,8 @@ export default function Profile({userId, usersList, syncUsers, pagination, syncP
                                 }
                             })
                             syncUsers(usersList);
+                            setTrigger(true);
+                            setMsg('Successfully updated user!');
                         })
                     }
                     setRegisterError(undefined);

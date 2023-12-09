@@ -129,6 +129,9 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
                     if(res.success) {
                         setPropertyObj(mapPropertyFields);
                         setFeaturedNotAllowedMsg(undefined);
+                        if(pagination.total < 20) {
+                            syncProperties([...properties, res.property]);
+                        }
                         syncPagination({...pagination, total: pagination.total + 1});
                         setOpenDialog(false);
                         setTrigger(true);

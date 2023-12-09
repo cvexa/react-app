@@ -45,6 +45,7 @@ export default function SingleProperty() {
                                 <div className="main-content">
                                     <span className="category">{property.type}</span>
                                     <h4>{property.title}</h4>
+                                    <p style={{color:'red'}}>{property.price} $</p>
                                     <p>{property.description}</p>
                                 </div>
                             </div>

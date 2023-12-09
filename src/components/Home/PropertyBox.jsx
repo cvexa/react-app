@@ -5,7 +5,7 @@ export default function PropertyBox ({property}) {
     return (
         <div className="col-lg-4 col-md-6">
             <div className="item">
-                <Link to={`/property/${property.id}`}><img src="assets/images/property-01.jpg"
+                <Link to={`/property/${property.id}`}><img src={property.pic ?? 'assets/images/property-01.jpg'}
                                                      alt=""/></Link>
                 <span className="category" style={{textTransform: 'capitalize'}}>{property.type}</span>
                 <h6>${property.price}</h6>

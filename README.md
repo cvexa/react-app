@@ -39,6 +39,7 @@ users with role 'admin' will see list of ALL properties in the DB with actions t
 
 Public part is using free template - https://templatemo.com/live/templatemo_591_villa_agency
 Both public and private parts are using - https://mui.com/
+Including custom module css, and some inline css
 
 ## Services
 `src/services/properties.jsx` - responsible for all interactions with the BE regarding properties <br/>

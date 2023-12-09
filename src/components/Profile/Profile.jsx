@@ -78,7 +78,6 @@ export default function Profile({userId, usersList, syncUsers, pagination, syncP
             if(updateData.email === userById.email) {
                 delete updateData['email'];
             }
-            console.log(updateData);
             updateUserById(userById.id, updateData).then((res) => {
                 if(res.status) {
                     setUserById(res.data);

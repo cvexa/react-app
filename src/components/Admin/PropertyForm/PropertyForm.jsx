@@ -127,7 +127,7 @@ export default function PropertyForm({propId, properties, syncProperties, pagina
             try {
                 createProperty(propertyObj).then((res) => {
                     if(res.success) {
-                        setPropertyObj(mapPropertyFields);
+                        setPropertyObj(undefined);
                         setFeaturedNotAllowedMsg(undefined);
                         if(pagination.page === pagination.count) {
                             syncProperties([...properties, res.property]);

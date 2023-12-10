@@ -95,7 +95,8 @@ export default function Users() {
                 setMsg('Successfully deleted user!');
             });
         }catch (e) {
-            console.log(e);
+            setTrigger(true);
+            setMsg('Something went wrong, please try again later');
         }
     }
 

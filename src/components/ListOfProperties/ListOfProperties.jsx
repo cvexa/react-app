@@ -21,7 +21,7 @@ export default function ListOfProperties() {
 
     useEffect(() => {
         try {
-            getPaginatedProperties(perPage).then((res) => {
+            getPaginatedPropertiesByType(perPage, 1, null).then((res) => {
                 setProperties(res);
                 setPagination({
                     page: res.current_page,

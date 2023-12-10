@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getPaginatedProperties} from "../../services/properties.jsx";
+import {getPaginatedProperties, getPaginatedPropertiesByType} from "../../services/properties.jsx";
 import {CircularProgress, Pagination} from "@mui/material";
 import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
@@ -14,7 +14,7 @@ export default function ListOfProperties() {
     })
 
     useEffect( () => {
-        getPaginatedProperties(perPage).then( (res) => {
+        getPaginatedPropertiesByType(perPage, 1, null).then( (res) => {
             setProperties(res);
             setPagination({
                 page: res.current_page,
@@ -24,7 +24,7 @@ export default function ListOfProperties() {
     }, []);
 
     const handlePageChange = (event, page) => {
-        getPaginatedProperties(perPage, page).then( (res) => {
+        getPaginatedPropertiesByType(perPage, page, null).then( (res) => {
             setProperties(res);
             setPagination({
                 page: res.current_page,

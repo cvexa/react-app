@@ -41,7 +41,8 @@ export default function Dashboard() {
                 })
             });
         }catch (e) {
-            console.log(e);
+            setTrigger(true);
+            setMsg('Something went wrong, please try again!')
         }
     },[]);
 

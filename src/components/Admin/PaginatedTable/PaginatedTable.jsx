@@ -36,9 +36,14 @@ export default function PaginatedTable({pagination, rowsData, tableDataSkeleton,
                                             </>)
                                             :
                                             (<>
-                                                {rowData.field !== null ? row[rowData.field] :
-                                                    <TableActions {...actions} dataId={row.id}
-                                                                  creatorId={row.creator?.id}/>}
+                                                {rowData.field !== null ?
+                                                    row[rowData.field]
+                                                    :
+                                                    <TableActions
+                                                        {...actions}
+                                                        dataId={row.id}
+                                                        creatorId={row.creator?.id}
+                                                    />}
                                             </>)
                                         }
                                     </TableCell>

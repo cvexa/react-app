@@ -81,7 +81,7 @@ export default function Users() {
                     setUser({});
                     navigate('/');
                 }else{
-                    users.map((data, position) => {//refresh properties list without the deleted one
+                    users.map((data, position) => {
                         Object.keys(users[position]).map((key) => {
                             if (users[position] && users[position].id === deleteId) {
                                 delete users[position];

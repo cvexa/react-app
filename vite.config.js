@@ -15,6 +15,24 @@ export default defineConfig({
         short_name: 'cvexaReactApp',
         description: 'My Awesome React description',
         theme_color: '#ffffff',
+        id: "/",
+        icons: [
+          {
+            "src": "assets/images/h-icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+          },
+        ],
+        screenshots: [
+          {
+            "src": "assets/images/h-icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Cvexa React App"
+          }
+        ]
       }
     })],
 })

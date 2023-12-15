@@ -35,7 +35,7 @@ export async function GetBestDealPropertyByTypes(type) {
 
 export async function getPaginatedProperties(perPage, page) {
     requestOptions.method = 'GET';
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     if(userToken) {
         requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     }
@@ -50,7 +50,7 @@ export async function getPaginatedProperties(perPage, page) {
 
 export async function GetPropertyById(id) {
     requestOptions.method = 'GET';
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     if(userToken) {
         requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     }
@@ -65,7 +65,7 @@ export async function GetPropertyById(id) {
 
 export async function getPaginatedPropertiesByType(perPage, page, type) {
     requestOptions.method = 'GET';
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     if(userToken) {
         requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     }
@@ -79,7 +79,7 @@ export async function getPaginatedPropertiesByType(perPage, page, type) {
 }
 
 export async function deleteProperty(id) {
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     requestOptions.method = 'DELETE';
     requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
 
@@ -92,7 +92,7 @@ export async function deleteProperty(id) {
 }
 
 export async function createProperty(data) {
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     requestOptions.method = 'POST';
     requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     requestOptions.body = JSON.stringify({...data});
@@ -107,7 +107,7 @@ export async function createProperty(data) {
 }
 
 export async function updateProperty(id,data) {
-    let userToken = getUser().token;
+    let userToken = getUser()?.token;
     requestOptions.method = 'PUT';
     requestOptions.headers = {...requestOptions.headers, Authorization: `Bearer ${userToken}`};
     requestOptions.body = JSON.stringify({...data});

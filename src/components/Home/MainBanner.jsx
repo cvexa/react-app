@@ -30,7 +30,7 @@ export default function MainBanner() {
 
     return (
         <div className="main-banner">
-            {properties.length > 1 ?
+            {properties.length > 0 ?
                 <OwlCarousel items={1} className="owl-carousel owl-banner main-banner" loop margin={10} nav>
                     {properties.map((property, key) => {
                        return (
